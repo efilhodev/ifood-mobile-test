@@ -11,6 +11,9 @@ import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import javax.inject.Inject
 
 class TweetAdapter : RecyclerView.Adapter<TweetAdapter.ViewHolder>(){
+
+    var onItemClick: ((Tweet) -> Unit)? = null
+
     private lateinit var tweets : List<Tweet>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,10 +36,16 @@ class TweetAdapter : RecyclerView.Adapter<TweetAdapter.ViewHolder>(){
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val binding : RowTweetBinding) : BaseViewHolder(binding.root){
+    inner class ViewHolder(private val binding : RowTweetBinding) : BaseViewHolder(binding.root){
         @Inject
         lateinit var viewModel : TweetViewModel
 
+        init {
+
+                itemView.setOnClickListener {
+                    onItemClick?.invoke(tweets[adapterPosition])
+            }
+        }
         fun bind(tweet: Tweet){
             viewModel.bind(tweet)
             binding.viewModel = viewModel

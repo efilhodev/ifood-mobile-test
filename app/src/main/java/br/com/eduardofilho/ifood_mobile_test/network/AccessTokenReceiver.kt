@@ -7,7 +7,7 @@ import br.com.eduardofilho.ifood_mobile_test.utils.PREFERENCES
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.services.language.v1.CloudNaturalLanguageScopes
 
-class AccessToken(val context: Context) {
+class AccessTokenReceiver(val context: Context) {
 
     fun refreshAccessTokenIfNeeded(): String? {
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)

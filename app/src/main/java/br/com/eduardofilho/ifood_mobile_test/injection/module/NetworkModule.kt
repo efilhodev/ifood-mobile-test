@@ -1,5 +1,7 @@
 package br.com.eduardofilho.ifood_mobile_test.injection.module
 
+import br.com.eduardofilho.ifood_mobile_test.App
+import br.com.eduardofilho.ifood_mobile_test.network.AccessTokenReceiver
 import br.com.eduardofilho.ifood_mobile_test.network.AppRestEndpoints
 import br.com.eduardofilho.ifood_mobile_test.utils.APP_DATE_PATTERN
 import br.com.eduardofilho.ifood_mobile_test.utils.BASE_URL
@@ -10,7 +12,6 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.google.gson.GsonBuilder
-import com.google.gson.Gson
 import retrofit2.converter.gson.GsonConverterFactory
 
 
@@ -40,5 +41,10 @@ object NetworkModule {
                 .build()
     }
 
-
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun provideAccessTokenReceiver() : AccessTokenReceiver {
+        return AccessTokenReceiver(App.applicationContext())
+    }
 }

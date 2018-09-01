@@ -1,12 +1,10 @@
 package br.com.eduardofilho.ifood_mobile_test.ui.home
 
-import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
-import br.com.eduardofilho.ifood_mobile_test.network.AccessToken
+import br.com.eduardofilho.ifood_mobile_test.network.AccessTokenReceiver
 import br.com.eduardofilho.ifood_mobile_test.network.AppRestEndpoints
 import br.com.eduardofilho.ifood_mobile_test.utils.Mock
 import io.reactivex.Observable
@@ -19,6 +17,9 @@ class HomeViewModel : BaseViewModel(){
 
     @Inject
     lateinit var api : AppRestEndpoints
+
+    @Inject
+    lateinit var accessTokenReceiver : AccessTokenReceiver
 
     private lateinit var subscription: Disposable
 
@@ -42,10 +43,9 @@ class HomeViewModel : BaseViewModel(){
                 )
     }
 
-    fun refreshAccessTokenIfNeeded(context: Context){
-        val accessToken = AccessToken(context)
+    fun refreshAccessTokenIfNeeded(){
 
-        subscription = Observable.fromCallable {accessToken.refreshAccessTokenIfNeeded()}
+        subscription = Observable.fromCallable {accessTokenReceiver.refreshAccessTokenIfNeeded()}
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { onRetrieveServiceStart() }

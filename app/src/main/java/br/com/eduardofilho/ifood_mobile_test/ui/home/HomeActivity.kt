@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.databinding.ActivityHomeBinding
+import br.com.eduardofilho.ifood_mobile_test.ui.detail.DetailActivity
 
 
 class HomeActivity : AppCompatActivity(){
@@ -30,7 +31,9 @@ class HomeActivity : AppCompatActivity(){
 
     private fun setupViewBehavior(){
         binding.rvHomeTweets.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        viewModel.refreshAccessTokenIfNeeded(this)
+        viewModel.refreshAccessTokenIfNeeded()
         viewModel.loadTweets("HeyDuds")
+
+        viewModel.homeTweetAdapter.onItemClick ={tweet -> DetailActivity.navigate(this)}
     }
 }
