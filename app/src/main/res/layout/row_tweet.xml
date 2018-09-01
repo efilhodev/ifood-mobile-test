@@ -9,66 +9,73 @@
             type="br.com.eduardofilho.ifood_mobile_test.ui.home.TweetViewModel"/>
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.balysv.materialripple.MaterialRippleLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="150dp"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        app:mrl_rippleRoundedCorners="4dp"
+        style="@style/MaterialRippleAccentEffect">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:minHeight="150dp">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="150dp">
 
-            <TextView
-                android:id="@+id/tv_row_home_tweet_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Olá este é um tweet de teste, espero muito terminar esta faculdade."
-                android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_row_home_tweet_screen_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:mutableText="@{viewModel.getTweetContent()}"/>
 
-            <TextView
-                android:id="@+id/tv_row_home_tweet_screen_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="ScreenName"
-                app:layout_constraintBottom_toTopOf="@+id/tv_row_home_tweet_real_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:mutableText="@{viewModel.getTweetScreenName()}"/>
+                <TextView
+                    android:id="@+id/tv_row_home_tweet_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Olá este é um tweet de teste, espero muito terminar esta faculdade."
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_row_home_tweet_screen_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:mutableText="@{viewModel.getTweetContent()}"/>
 
-            <TextView
-                android:id="@+id/tv_row_home_tweet_real_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Real Name da Silva"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:mutableText="@{viewModel.getTweetRealName()}"/>
+                <TextView
+                    android:id="@+id/tv_row_home_tweet_screen_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="ScreenName"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_row_home_tweet_real_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:mutableText="@{viewModel.getTweetScreenName()}"/>
 
-            <TextView
-                android:id="@+id/tv_row_home_tweet_created_at"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="29/08/2018 12:43"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:mutableText="@{viewModel.getTweetCreatedAt()}"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tv_row_home_tweet_real_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Real Name da Silva"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:mutableText="@{viewModel.getTweetRealName()}"/>
+
+                <TextView
+                    android:id="@+id/tv_row_home_tweet_created_at"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="29/08/2018 12:43"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:mutableText="@{viewModel.getTweetCreatedAt()}"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </com.balysv.materialripple.MaterialRippleLayout>
 </layout>
