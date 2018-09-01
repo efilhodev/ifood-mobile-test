@@ -22,7 +22,8 @@ class HomeViewModel : BaseViewModel(){
 
     private lateinit var subscription: Disposable
 
-    val homeLoadingVisibility :MutableLiveData<Int> = MutableLiveData()
+    val homeLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
+    val homeTweetListVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetAdapter : TweetAdapter = TweetAdapter()
 
     init {
@@ -59,11 +60,13 @@ class HomeViewModel : BaseViewModel(){
 
     private fun onRetrieveServiceStart(){
         homeLoadingVisibility.value = View.VISIBLE
+        homeTweetListVisibility.value = View.GONE
 
     }
 
     private fun onRetrieveServiceFinish(){
         homeLoadingVisibility.value = View.GONE
+        homeTweetListVisibility.value = View.VISIBLE
     }
 
     private fun onRetrieveTweetListSuccess(tweets : List<Tweet>){
