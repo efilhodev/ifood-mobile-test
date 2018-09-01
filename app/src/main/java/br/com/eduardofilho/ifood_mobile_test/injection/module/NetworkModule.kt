@@ -1,6 +1,7 @@
 package br.com.eduardofilho.ifood_mobile_test.injection.module
 
 import br.com.eduardofilho.ifood_mobile_test.network.AppRestEndpoints
+import br.com.eduardofilho.ifood_mobile_test.utils.APP_DATE_PATTERN
 import br.com.eduardofilho.ifood_mobile_test.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -8,7 +9,10 @@ import dagger.Reusable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
+import com.google.gson.GsonBuilder
+import com.google.gson.Gson
+import retrofit2.converter.gson.GsonConverterFactory
+
 
 @Module
 @Suppress("unused")
@@ -25,10 +29,16 @@ object NetworkModule {
     @Reusable
     @JvmStatic
     internal fun provideRetrofitInterface(): Retrofit {
+        val gson = GsonBuilder()
+                .setDateFormat(APP_DATE_PATTERN)
+                .create()
+
         return Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
     }
+
+
 }
