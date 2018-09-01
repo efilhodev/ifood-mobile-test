@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.databinding.ActivityHomeBinding
 
+
 class HomeActivity : AppCompatActivity(){
     private lateinit var binding: ActivityHomeBinding
     private lateinit var viewModel: HomeViewModel
@@ -29,7 +30,7 @@ class HomeActivity : AppCompatActivity(){
 
     private fun setupViewBehavior(){
         binding.rvHomeTweets.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-        viewModel.loadTweets("ifood")
+        viewModel.refreshAccessTokenIfNeeded(this)
+        viewModel.loadTweets("HeyDuds")
     }
 }
