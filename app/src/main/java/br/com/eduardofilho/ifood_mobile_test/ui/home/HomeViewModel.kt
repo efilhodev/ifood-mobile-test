@@ -39,7 +39,7 @@ class HomeViewModel : BaseViewModel(){
                 .doOnTerminate { onRetrieveServiceFinish() }
                 .subscribe(
                         { result -> onRetrieveTweetListSuccess(result) },
-                        { onRetrieveTweetListError() }
+                        { e -> onRetrieveTweetListError(e) }
                 )
     }
 
@@ -52,10 +52,8 @@ class HomeViewModel : BaseViewModel(){
                 .doOnTerminate { onRetrieveServiceFinish() }
                 .subscribe(
                         { token -> onRetrieveAccessTokenSuccess(token)},
-                        { onRetrieveAccessTokenError()})
+                        { e -> onRetrieveAccessTokenError(e)})
     }
-
-
 
 
     private fun onRetrieveServiceStart(){
@@ -73,14 +71,16 @@ class HomeViewModel : BaseViewModel(){
         homeTweetAdapter.updateTweetList(tweets)
     }
 
-    private fun onRetrieveTweetListError(){
+    private fun onRetrieveTweetListError(e : Throwable){
+        e.printStackTrace()
     }
 
     private fun onRetrieveAccessTokenSuccess(token : String?){
 
     }
 
-    private fun onRetrieveAccessTokenError(){
+    private fun onRetrieveAccessTokenError(e : Throwable){
+        e.printStackTrace()
     }
 
     override fun onCleared() {

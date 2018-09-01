@@ -35,14 +35,14 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Olá este é um tweet de teste, espero muito terminar esta faculdade."
+                    android:text="Olá este é um tweet de teste."
                     android:textSize="18sp"
                     app:layout_constraintBottom_toTopOf="@+id/tv_row_home_tweet_screen_name"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    app:mutableText="@{viewModel.getTweetContent()}"/>
+                    app:mutableText="@{viewModel.getTweetContent()}" />
 
                 <TextView
                     android:id="@+id/tv_row_home_tweet_screen_name"
