@@ -1,7 +1,10 @@
 package br.com.eduardofilho.ifood_mobile_test.ui.detail
 
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
+import br.com.eduardofilho.ifood_mobile_test.model.SentimentCategoryEnum
+import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import br.com.eduardofilho.ifood_mobile_test.network.AccessTokenReceiver
 import br.com.eduardofilho.ifood_mobile_test.network.NaturalLanguageAnalyzer
 import com.google.api.services.language.v1.model.Sentiment
@@ -20,11 +23,16 @@ class DetailViewModel : BaseViewModel(){
     lateinit var accessTokenReceiver : AccessTokenReceiver
 
     private lateinit var subscription: Disposable
+    private lateinit var tweet : Tweet
 
-    val detailTweetContent = MutableLiveData<String>()
+    var onSentimentAnalyzed: ((SentimentCategoryEnum) -> Unit)? = null
+
+    val detailAnalyzerLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
+    val detailAnalyzerButtonVisibility : MutableLiveData<Int> = MutableLiveData()
 
 
-    fun analyzeTextSentiment(){
+    fun analyzeTweetSentiment(tweet: Tweet){
+        this.tweet = tweet
         getOrRefreshAccessServiceTokenIfNeeded()
     }
 
@@ -33,7 +41,7 @@ class DetailViewModel : BaseViewModel(){
         subscription = Observable.fromCallable {naturalLanguageAnalyzer.analyzeSentimentByService(text, token)}
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { onRetrieveServiceStart() }
+                .doOnSubscribe { }
                 .doOnTerminate { onRetrieveServiceFinish() }
                 .subscribe(
                         { sentiment -> onRetrieveTextSentimentSuccess(sentiment)},
@@ -46,22 +54,25 @@ class DetailViewModel : BaseViewModel(){
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { onRetrieveServiceStart() }
-                .doOnTerminate { onRetrieveServiceFinish() }
+                .doOnTerminate { }
                 .subscribe(
                         { token -> onRetrieveAccessTokenSuccess(token)},
                         { e -> onRetrieveAccessTokenError(e)})
     }
 
     private fun onRetrieveServiceStart(){
-
+        detailAnalyzerButtonVisibility.value = View.INVISIBLE
+        detailAnalyzerLoadingVisibility.value =  View.VISIBLE
     }
 
     private fun onRetrieveServiceFinish(){
-
+        detailAnalyzerButtonVisibility.value = View.VISIBLE
+        detailAnalyzerLoadingVisibility.value =  View.GONE
     }
 
     private fun onRetrieveTextSentimentSuccess(sentiment : Sentiment){
-
+        val sentimentCategoryEnum = categorizeSentiment(sentiment)
+        onSentimentAnalyzed?.invoke(sentimentCategoryEnum)
     }
 
     private fun onRetrieveTextSentimentError(e: Throwable){
@@ -69,9 +80,7 @@ class DetailViewModel : BaseViewModel(){
     }
 
     private fun onRetrieveAccessTokenSuccess(token : String?){
-        if(detailTweetContent.value.isNullOrEmpty() || token.isNullOrEmpty()) return
-
-        getTextSentimentByService(detailTweetContent.value!!, token!!)
+        getTextSentimentByService(tweet.text, token!!)
     }
 
     private fun onRetrieveAccessTokenError(e : Throwable){
@@ -84,6 +93,14 @@ class DetailViewModel : BaseViewModel(){
             subscription.dispose()
         }catch (e : Exception){
             e.printStackTrace()
+        }
+    }
+
+    private fun categorizeSentiment(sentiment: Sentiment) : SentimentCategoryEnum{
+        return when{
+            sentiment.score in 0.6..1.0 && sentiment.magnitude > 1.0 -> SentimentCategoryEnum.POSITIVE
+            sentiment.score in -1.0..-0.1 && sentiment.magnitude > 1.0 -> SentimentCategoryEnum.NEGATIVE
+            else -> SentimentCategoryEnum.NEUTRAL
         }
     }
 }

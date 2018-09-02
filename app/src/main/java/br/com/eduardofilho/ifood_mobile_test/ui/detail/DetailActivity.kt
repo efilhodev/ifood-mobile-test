@@ -3,11 +3,13 @@ package br.com.eduardofilho.ifood_mobile_test.ui.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.databinding.ActivityDetailBinding
+import br.com.eduardofilho.ifood_mobile_test.model.SentimentCategoryEnum
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import br.com.eduardofilho.ifood_mobile_test.utils.extensions.toDatePatternString
 
@@ -47,7 +49,38 @@ class DetailActivity : AppCompatActivity(){
     }
 
     private fun setupViewBehavior(){
+        binding.btnDetailTweetSentimentAnalyzer.setOnClickListener { viewModel.analyzeTweetSentiment(tweet)}
+        viewModel.onSentimentAnalyzed = {sentimentCategory -> setupSentimentInfoText(sentimentCategory)}
+    }
 
+    private fun setupSentimentInfoText(sentimentCategoryEnum: SentimentCategoryEnum){
+        when(sentimentCategoryEnum){
+            SentimentCategoryEnum.POSITIVE -> {
+                setupPositiveSentimentInfoText()
+            }
+            SentimentCategoryEnum.NEUTRAL -> {
+                setupNeutralSentimentInfoText()
+            }
+            SentimentCategoryEnum.NEGATIVE -> {
+                setupNegativeSentimentInfoText()
+            }
+        }
+    }
+
+    private fun setupPositiveSentimentInfoText(){
+        binding.tvDetailTweetSentimentInfo.text = "Esse é um Tweet positivo"
+        binding.tvDetailTweetSentimentInfo.setBackgroundColor(this.resources.getColor(R.color.colorAccent))
+        binding.tvDetailTweetSentimentInfo.visibility = View.VISIBLE
+    }
+    private fun setupNeutralSentimentInfoText(){
+        binding.tvDetailTweetSentimentInfo.text = "Esse é um Tweet neutro"
+        binding.tvDetailTweetSentimentInfo.setBackgroundColor(this.resources.getColor(R.color.colorAccent))
+        binding.tvDetailTweetSentimentInfo.visibility = View.VISIBLE
+    }
+    private fun setupNegativeSentimentInfoText(){
+        binding.tvDetailTweetSentimentInfo.text = "Esse é um Tweet negativo"
+        binding.tvDetailTweetSentimentInfo.setBackgroundColor(this.resources.getColor(R.color.colorAccent))
+        binding.tvDetailTweetSentimentInfo.visibility = View.VISIBLE
     }
 
 }
