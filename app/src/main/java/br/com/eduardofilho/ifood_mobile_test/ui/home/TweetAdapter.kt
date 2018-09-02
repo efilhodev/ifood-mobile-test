@@ -1,6 +1,7 @@
 package br.com.eduardofilho.ifood_mobile_test.ui.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 class TweetAdapter : RecyclerView.Adapter<TweetAdapter.ViewHolder>(){
 
-    var onItemClick: ((Tweet) -> Unit)? = null
+    var onItemClick: ((Tweet, View) -> Unit)? = null
 
     private lateinit var tweets : List<Tweet>
 
@@ -43,7 +44,7 @@ class TweetAdapter : RecyclerView.Adapter<TweetAdapter.ViewHolder>(){
         init {
 
                 itemView.setOnClickListener {
-                    onItemClick?.invoke(tweets[adapterPosition])
+                    onItemClick?.invoke(tweets[adapterPosition], binding.root)
             }
         }
         fun bind(tweet: Tweet){

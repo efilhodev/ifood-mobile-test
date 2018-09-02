@@ -35,6 +35,6 @@ class HomeActivity : AppCompatActivity(){
         binding.rvHomeTweets.addItemDecoration(DividerItemDecoration(this))
 
         viewModel.loadTweets("HeyDuds")
-        viewModel.homeTweetAdapter.onItemClick ={tweet -> DetailActivity.navigate(this, tweet)}
+        viewModel.homeTweetAdapter.onItemClick ={tweet, view -> DetailActivity.navigate(this, tweet, view)}
     }
 }
