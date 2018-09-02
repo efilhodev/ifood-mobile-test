@@ -13,7 +13,6 @@ import com.google.api.services.language.v1.model.AnalyzeSentimentResponse
 import com.google.api.services.language.v1.model.Document
 import com.google.api.services.language.v1.model.Sentiment
 import java.io.IOException
-import java.util.concurrent.ArrayBlockingQueue
 
 class NaturalLanguageAnalyzer{
 
@@ -23,29 +22,33 @@ class NaturalLanguageAnalyzer{
             JacksonFactory.getDefaultInstance(),
             HttpRequestInitializer { request -> credential.initialize(request) }).build()
 
-    private val request = ArrayBlockingQueue<CloudNaturalLanguageRequest<out GenericJson>>(3)
+    lateinit var request : CloudNaturalLanguageRequest<out GenericJson>
 
-    fun analyzeSentiment(text: String) : Sentiment {
-        try {
-            request.add(cloudNaturalLanguage
-                    .documents()
-                    .analyzeSentiment(AnalyzeSentimentRequest()
-                            .setDocument(Document()
-                                    .setContent(text)
-                                    .setType("PLAIN_TEXT"))))
-        } catch (e: IOException) {
-           e.printStackTrace()
-        }
-
-        val analyzeSentimentResponse = request.take().execute() as AnalyzeSentimentResponse
-
-        return analyzeSentimentResponse.documentSentiment
-    }
-
-    fun setGoogleCredential(token : String){
+    private fun setAccessTokenIntoGoogleCredential(token : String){
         credential = GoogleCredential()
                 .setAccessToken(token)
                 .createScoped(CloudNaturalLanguageScopes.all())
     }
 
+    fun analyzeSentimentByService(text: String, token: String) : Sentiment {
+
+        if(token.isEmpty()) throw IllegalStateException("Credential access token cant be empty")
+
+        setAccessTokenIntoGoogleCredential(token)
+
+        try {
+            request = cloudNaturalLanguage
+                    .documents()
+                    .analyzeSentiment(AnalyzeSentimentRequest()
+                            .setDocument(Document()
+                                    .setContent(text)
+                                    .setType("PLAIN_TEXT")))
+        } catch (e: IOException) {
+           e.printStackTrace()
+        }
+
+        val analyzeSentimentResponse = request.execute() as AnalyzeSentimentResponse
+
+        return analyzeSentimentResponse.documentSentiment
+    }
 }

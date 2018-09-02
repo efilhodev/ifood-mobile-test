@@ -36,10 +36,7 @@ class DetailActivity : AppCompatActivity(){
     }
 
     private fun setupViewBehavior(){
-        viewModel.analyzeSentiment("It might seem crazy what I'm 'bout to say\n" +
-                "Sunshine she's here, you can take a break\n" +
-                "I'm a hot air balloon that could go to space\n" +
-                "With the air, like I don't care, baby, by the way")
+
     }
 
 }

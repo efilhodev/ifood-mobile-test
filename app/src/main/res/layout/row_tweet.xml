@@ -12,70 +12,79 @@
     <com.balysv.materialripple.MaterialRippleLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         app:mrl_rippleRoundedCorners="4dp"
         style="@style/MaterialRippleAccentEffect">
 
-        <androidx.cardview.widget.CardView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="150dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="150dp">
+            android:minHeight="100dp">
 
 
-                <TextView
-                    android:id="@+id/tv_row_home_tweet_content"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Olá este é um tweet de teste."
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_row_home_tweet_screen_name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:mutableText="@{viewModel.getTweetContent()}" />
+            <TextView
+                android:id="@+id/tv_row_home_tweet_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Olá este é um tweet de teste."
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/tv_row_home_tweet_real_name"
+                app:layout_constraintVertical_bias="0.0"
+                app:mutableText="@{viewModel.getTweetContent()}" />
 
-                <TextView
-                    android:id="@+id/tv_row_home_tweet_screen_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="ScreenName"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_row_home_tweet_real_name"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:mutableText="@{viewModel.getTweetScreenName()}"/>
+            <TextView
+                android:id="@+id/tv_row_home_tweet_screen_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:alpha=".5"
+                android:text="ScreenName"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_row_home_tweet_real_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_row_home_tweet_real_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_row_home_tweet_real_name"
+                app:mutableText="@{viewModel.getTweetScreenName()}" />
 
-                <TextView
-                    android:id="@+id/tv_row_home_tweet_real_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Real Name da Silva"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:mutableText="@{viewModel.getTweetRealName()}"/>
+            <TextView
+                android:id="@+id/tv_row_home_tweet_real_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Real Name da Silva"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/tv_row_home_tweet_screen_name"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView"
+                app:mutableText="@{viewModel.getTweetRealName()}" />
 
-                <TextView
-                    android:id="@+id/tv_row_home_tweet_created_at"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="29/08/2018 12:43"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:mutableText="@{viewModel.getTweetCreatedAt()}"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/tv_row_home_tweet_created_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
+                android:text="29/08/2018 12:43"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_row_home_tweet_content"
+                app:mutableText="@{viewModel.getTweetCreatedAt()}" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="8dp"
+                android:src="@mipmap/ic_launcher"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.balysv.materialripple.MaterialRippleLayout>
 </layout>

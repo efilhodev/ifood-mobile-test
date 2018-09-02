@@ -18,9 +18,6 @@ class HomeViewModel : BaseViewModel(){
     @Inject
     lateinit var api : AppRestEndpoints
 
-    @Inject
-    lateinit var accessTokenReceiver : AccessTokenReceiver
-
     private lateinit var subscription: Disposable
 
     val homeLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
@@ -43,18 +40,6 @@ class HomeViewModel : BaseViewModel(){
                 )
     }
 
-    fun refreshAccessTokenIfNeeded(){
-
-        subscription = Observable.fromCallable {accessTokenReceiver.refreshAccessTokenIfNeeded()}
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { onRetrieveServiceStart() }
-                .doOnTerminate { onRetrieveServiceFinish() }
-                .subscribe(
-                        { token -> onRetrieveAccessTokenSuccess(token)},
-                        { e -> onRetrieveAccessTokenError(e)})
-    }
-
 
     private fun onRetrieveServiceStart(){
         homeLoadingVisibility.value = View.VISIBLE
@@ -75,13 +60,6 @@ class HomeViewModel : BaseViewModel(){
         e.printStackTrace()
     }
 
-    private fun onRetrieveAccessTokenSuccess(token : String?){
-
-    }
-
-    private fun onRetrieveAccessTokenError(e : Throwable){
-        e.printStackTrace()
-    }
 
     override fun onCleared() {
         super.onCleared()

@@ -1,11 +1,9 @@
 package br.com.eduardofilho.ifood_mobile_test.ui.detail
 
-import android.content.Context
-import br.com.eduardofilho.ifood_mobile_test.App
+import androidx.lifecycle.MutableLiveData
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
+import br.com.eduardofilho.ifood_mobile_test.network.AccessTokenReceiver
 import br.com.eduardofilho.ifood_mobile_test.network.NaturalLanguageAnalyzer
-import br.com.eduardofilho.ifood_mobile_test.utils.ACCESS_TOKEN_PREF
-import br.com.eduardofilho.ifood_mobile_test.utils.PREFERENCES
 import com.google.api.services.language.v1.model.Sentiment
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,37 +16,49 @@ class DetailViewModel : BaseViewModel(){
     @Inject
     lateinit var naturalLanguageAnalyzer: NaturalLanguageAnalyzer
 
+    @Inject
+    lateinit var accessTokenReceiver : AccessTokenReceiver
+
     private lateinit var subscription: Disposable
 
-    init {
-        val token = getAccessTokenIfExisted()
-        if(!token.isNullOrEmpty()){
-            naturalLanguageAnalyzer.setGoogleCredential(token!!)
-        }else{
-            // Request token again
-        }
+    val detailTweetContent = MutableLiveData<String>()
+
+
+    fun analyzeTextSentiment(){
+        getOrRefreshAccessServiceTokenIfNeeded()
     }
 
-    fun analyzeSentiment(text : String){
-        subscription = Observable.fromCallable {naturalLanguageAnalyzer.analyzeSentiment(text)}
+    private fun getTextSentimentByService(text : String, token : String){
+
+        subscription = Observable.fromCallable {naturalLanguageAnalyzer.analyzeSentimentByService(text, token)}
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { onRetrieveServiceStart() }
                 .doOnTerminate { onRetrieveServiceFinish() }
                 .subscribe(
-                        { token -> onRetrieveTextSentimentSuccess(token)},
+                        { sentiment -> onRetrieveTextSentimentSuccess(sentiment)},
                         { e -> onRetrieveTextSentimentError(e)})
     }
 
-    private fun onRetrieveServiceStart(){
+    private fun getOrRefreshAccessServiceTokenIfNeeded(){
 
+        subscription = Observable.fromCallable {accessTokenReceiver.getOrRefreshServiceAccessTokenIfNeeded()}
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { onRetrieveServiceStart() }
+                .doOnTerminate { onRetrieveServiceFinish() }
+                .subscribe(
+                        { token -> onRetrieveAccessTokenSuccess(token)},
+                        { e -> onRetrieveAccessTokenError(e)})
+    }
+
+    private fun onRetrieveServiceStart(){
 
     }
 
     private fun onRetrieveServiceFinish(){
 
     }
-
 
     private fun onRetrieveTextSentimentSuccess(sentiment : Sentiment){
 
@@ -58,8 +68,18 @@ class DetailViewModel : BaseViewModel(){
         e.printStackTrace()
     }
 
-    private fun getAccessTokenIfExisted() : String?{
-        val preferences = App.applicationContext().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
-        return preferences.getString(ACCESS_TOKEN_PREF, "")
+    private fun onRetrieveAccessTokenSuccess(token : String?){
+        if(detailTweetContent.value.isNullOrEmpty() || token.isNullOrEmpty()) return
+
+        getTextSentimentByService(detailTweetContent.value!!, token!!)
+    }
+
+    private fun onRetrieveAccessTokenError(e : Throwable){
+        e.printStackTrace()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        subscription.dispose()
     }
 }

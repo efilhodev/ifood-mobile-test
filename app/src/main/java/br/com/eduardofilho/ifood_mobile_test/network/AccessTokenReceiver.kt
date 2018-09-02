@@ -10,7 +10,7 @@ import com.google.api.services.language.v1.CloudNaturalLanguageScopes
 
 class AccessTokenReceiver(val context: Context) {
 
-    fun refreshAccessTokenIfNeeded(): String? {
+    fun getOrRefreshServiceAccessTokenIfNeeded(): String? {
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
         val currentToken = preferences.getString(ACCESS_TOKEN_PREF, "")
 
