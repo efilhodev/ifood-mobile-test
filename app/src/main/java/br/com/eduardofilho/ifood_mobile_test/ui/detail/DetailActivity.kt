@@ -18,10 +18,11 @@ import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import br.com.eduardofilho.ifood_mobile_test.utils.extensions.toDatePatternString
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
+import br.com.eduardofilho.ifood_mobile_test.base.BaseActivity
 import br.com.eduardofilho.ifood_mobile_test.utils.TRANSITION_KEY
 
 
-class DetailActivity : AppCompatActivity(){
+class DetailActivity : BaseActivity(){
 
     private lateinit var binding : ActivityDetailBinding
     private lateinit var viewModel : DetailViewModel
@@ -48,6 +49,16 @@ class DetailActivity : AppCompatActivity(){
         setupViewBehavior()
 
         ViewCompat.setTransitionName(binding.root, TRANSITION_KEY)
+    }
+
+    override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {
+        if (!isConnected) {
+            showErrorSnackBar(binding.root, getString(R.string.err_not_connected))
+            disableAnalyzerSentimentButton()
+        } else {
+            hideErrorSnackBar()
+            enableAnalyzerSentimentButton()
+        }
     }
 
     private fun setupBindingView(){
@@ -99,4 +110,15 @@ class DetailActivity : AppCompatActivity(){
         })
         binding.tvDetailTweetSentimentInfo.startAnimation(animation)
     }
+
+    private fun disableAnalyzerSentimentButton(){
+        binding.btnDetailTweetSentimentAnalyzer.isEnabled = false
+        binding.btnDetailTweetSentimentAnalyzer.alpha = 0.5f
+    }
+
+    private fun enableAnalyzerSentimentButton(){
+        binding.btnDetailTweetSentimentAnalyzer.isEnabled = true
+        binding.btnDetailTweetSentimentAnalyzer.alpha = 1.0f
+    }
+
 }

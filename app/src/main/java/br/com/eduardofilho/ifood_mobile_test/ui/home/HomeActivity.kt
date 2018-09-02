@@ -1,18 +1,19 @@
 package br.com.eduardofilho.ifood_mobile_test.ui.home
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.eduardofilho.ifood_mobile_test.R
+import br.com.eduardofilho.ifood_mobile_test.base.BaseActivity
 import br.com.eduardofilho.ifood_mobile_test.databinding.ActivityHomeBinding
 import br.com.eduardofilho.ifood_mobile_test.ui.detail.DetailActivity
 import br.com.eduardofilho.ifood_mobile_test.utils.DividerItemDecoration
 
 
-class HomeActivity : AppCompatActivity(){
+class HomeActivity : BaseActivity(){
+
     private lateinit var binding: ActivityHomeBinding
     private lateinit var viewModel: HomeViewModel
 
@@ -36,5 +37,14 @@ class HomeActivity : AppCompatActivity(){
 
         viewModel.loadTweets("HeyDuds")
         viewModel.homeTweetAdapter.onItemClick ={tweet, view -> DetailActivity.navigate(this, tweet, view)}
+    }
+
+
+    override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {
+        if (!isConnected) {
+            showErrorSnackBar(binding.root, getString(R.string.err_not_connected))
+        } else {
+            hideErrorSnackBar()
+        }
     }
 }

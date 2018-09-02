@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ifood-mobile-test</string>
+    <string name="err_not_connected">Sem conexão com a internet</string>
 </resources>

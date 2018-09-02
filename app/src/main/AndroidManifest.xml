@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.com.eduardofilho.ifood_mobile_test">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="br.com.eduardofilho.ifood_mobile_test.App">
+        android:name="br.com.eduardofilho.ifood_mobile_test.App"
+        tools:ignore="GoogleAppIndexingWarning">
 
 
         <activity
@@ -26,5 +29,14 @@
             android:name=".ui.detail.DetailActivity"
             android:label="Detalhes"
             android:configChanges="orientation|screenSize"/>
+
+
+        <receiver
+            android:name=".network.ConnectivityReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
