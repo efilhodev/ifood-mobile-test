@@ -14,7 +14,7 @@ class Mock{
 
             for (i in 1..count) {
                 val user = User(i.toLong(), "Eduardo Julio $i", "Duds $i", "")
-                val tweet = Tweet(i.toLong(), "Text Content $i", Date(), user)
+                val tweet = Tweet(i.toLong(), "TLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. $i", Date(), user)
                 tweets.add(tweet)
 
             }

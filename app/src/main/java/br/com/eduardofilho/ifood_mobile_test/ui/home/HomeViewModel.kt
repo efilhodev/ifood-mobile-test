@@ -63,6 +63,10 @@ class HomeViewModel : BaseViewModel(){
 
     override fun onCleared() {
         super.onCleared()
-        subscription.dispose()
+        try {
+            subscription.dispose()
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
     }
 }
