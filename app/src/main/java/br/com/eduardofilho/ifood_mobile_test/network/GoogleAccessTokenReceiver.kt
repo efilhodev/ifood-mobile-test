@@ -13,7 +13,7 @@ class GoogleAccessTokenReceiver(val context: Context) {
     fun getOrRefreshServiceAccessTokenIfNeeded(): String? {
         var token = getValidGoogleAccessToken()
 
-        if(token.isEmpty() || token == "not valid"){
+        if( token == "not valid"){
             token = refreshGoogleAccessToken()
         }
         return token
@@ -22,7 +22,7 @@ class GoogleAccessTokenReceiver(val context: Context) {
     private fun getValidGoogleAccessToken() : String{
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
 
-        var currentToken = preferences.getString(ACCESS_TOKEN_PREF, "")
+        var currentToken = preferences.getString(ACCESS_TOKEN_PREF, "not valid")
 
         if(!currentToken!!.isEmpty()){
             val credential = GoogleCredential()
