@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ifood-mobile-test</string>
     <string name="err_not_connected">Sem conexão com a internet</string>
+    <string name="info_tweet_list_empty">Nenhum tweet encontrado</string>
 </resources>

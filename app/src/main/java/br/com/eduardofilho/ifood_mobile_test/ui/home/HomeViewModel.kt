@@ -2,6 +2,8 @@ package br.com.eduardofilho.ifood_mobile_test.ui.home
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import br.com.eduardofilho.ifood_mobile_test.App
+import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import br.com.eduardofilho.ifood_mobile_test.network.AccessTokenReceiver
@@ -22,6 +24,8 @@ class HomeViewModel : BaseViewModel(){
 
     val homeLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetListVisibility : MutableLiveData<Int> = MutableLiveData()
+    val homeTweetListInfoText : MutableLiveData<String> = MutableLiveData()
+    val homeTweetListInfoVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetAdapter : TweetAdapter = TweetAdapter()
 
     init {
@@ -42,22 +46,39 @@ class HomeViewModel : BaseViewModel(){
 
 
     private fun onRetrieveServiceStart(){
-        homeLoadingVisibility.value = View.VISIBLE
-        homeTweetListVisibility.value = View.GONE
-
+        startTweetListLoading()
     }
 
     private fun onRetrieveServiceFinish(){
-        homeLoadingVisibility.value = View.GONE
-        homeTweetListVisibility.value = View.VISIBLE
+        finishTweetListLoading()
     }
 
     private fun onRetrieveTweetListSuccess(tweets : List<Tweet>){
-        homeTweetAdapter.updateTweetList(tweets)
+        if(!tweets.isEmpty()){
+            homeTweetAdapter.updateTweetList(tweets)
+        }else{
+            showTweetListInfoText(App.applicationContext().getString(R.string.info_tweet_list_empty))
+        }
     }
 
     private fun onRetrieveTweetListError(e : Throwable){
+        showTweetListInfoText(e.message)
         e.printStackTrace()
+    }
+
+    private fun showTweetListInfoText(message : String?){
+        homeTweetListInfoText.value = message ?: ""
+        homeTweetListInfoVisibility.value = View.VISIBLE
+    }
+
+    private fun startTweetListLoading(){
+        homeLoadingVisibility.value = View.VISIBLE
+        homeTweetListVisibility.value = View.GONE
+    }
+
+    private fun finishTweetListLoading(){
+        homeLoadingVisibility.value = View.GONE
+        homeTweetListVisibility.value = View.VISIBLE
     }
 
 

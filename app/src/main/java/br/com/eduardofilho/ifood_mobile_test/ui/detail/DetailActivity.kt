@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -81,13 +82,13 @@ class DetailActivity : BaseActivity(){
     private fun setupSentimentInfoBehavior(sentimentCategoryEnum: SentimentCategoryEnum){
         when(sentimentCategoryEnum){
             SentimentCategoryEnum.POSITIVE -> {
-                initSentimentInfoText("Esse é um Tweet positivo", resources.getColor(R.color.colorAccent))
+                initSentimentInfoText("Esse é um Tweet positivo \ud83d\ude00", resources.getColor(R.color.colorPositiveTweet))
             }
             SentimentCategoryEnum.NEUTRAL -> {
-                initSentimentInfoText("Esse é um Tweet neutro", resources.getColor(R.color.colorAccent))
+                initSentimentInfoText("Esse é um Tweet neutro \ud83d\ude10", resources.getColor(R.color.colorNeutralTweet))
             }
             SentimentCategoryEnum.NEGATIVE -> {
-                initSentimentInfoText("Esse é um Tweet negativo", resources.getColor(R.color.colorAccent))
+                initSentimentInfoText("Esse é um Tweet negativo \ud83d\ude14", resources.getColor(R.color.colorNegativeTweet))
                 startSentimentInfoAnimation()
             }
         }
@@ -95,7 +96,7 @@ class DetailActivity : BaseActivity(){
     }
 
     private fun initSentimentInfoText(text : String, colorResource : Int){
-        binding.tvDetailTweetSentimentInfo.text = text
+        binding.tvDetailTweetSentimentInfo.text = Html.fromHtml(text)
         binding.tvDetailTweetSentimentInfo.setBackgroundColor(colorResource)
     }
 
