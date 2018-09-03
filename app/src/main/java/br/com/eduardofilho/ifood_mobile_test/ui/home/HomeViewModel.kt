@@ -5,12 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import br.com.eduardofilho.ifood_mobile_test.App
 import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
+import br.com.eduardofilho.ifood_mobile_test.model.OAuthToken
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import br.com.eduardofilho.ifood_mobile_test.network.AppRestEndpoints
+import br.com.eduardofilho.ifood_mobile_test.utils.TWITTER_CONSUMER_KEY
+import br.com.eduardofilho.ifood_mobile_test.utils.TWITTER_CONSUMER_SECRET
 import br.com.eduardofilho.ifood_mobile_test.utils.mock.Mock
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.Credentials
 import javax.inject.Inject
 
 class HomeViewModel : BaseViewModel(){
@@ -32,6 +36,18 @@ class HomeViewModel : BaseViewModel(){
 
     init {
         homeTweetAdapter.updateTweetList(Mock.getMockTweets(20))
+    }
+
+    fun getOAuthToken(){
+        subscription = api.postTwitterCredentials("client_credentials")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { onRetrieveOAuthTokenStart() }
+                .doOnTerminate { onRetrieveOAuthTokenFinish() }
+                .subscribe(
+                        { result -> onRetrieveOAuthTokenSuccess(result)},
+                        { e -> onRetrieveOAuthTokenError(e)}
+                )
     }
 
     fun loadTweets(screenName : String){
@@ -66,6 +82,25 @@ class HomeViewModel : BaseViewModel(){
     }
 
     private fun onRetrieveTweetListError(e : Throwable){
+        showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
+        onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
+
+        e.printStackTrace()
+    }
+
+    private fun onRetrieveOAuthTokenStart(){
+
+    }
+
+    private fun onRetrieveOAuthTokenFinish(){
+
+    }
+
+    private fun onRetrieveOAuthTokenSuccess(oAuthToken : OAuthToken){
+
+    }
+
+    private fun onRetrieveOAuthTokenError(e : Throwable){
         showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
         onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
 

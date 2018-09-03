@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
 import br.com.eduardofilho.ifood_mobile_test.model.SentimentCategoryEnum
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
-import br.com.eduardofilho.ifood_mobile_test.network.AccessTokenReceiver
+import br.com.eduardofilho.ifood_mobile_test.network.GoogleAccessTokenReceiver
 import br.com.eduardofilho.ifood_mobile_test.network.NaturalLanguageAnalyzer
 import com.google.api.services.language.v1.model.Sentiment
 import io.reactivex.Observable
@@ -20,7 +20,7 @@ class DetailViewModel : BaseViewModel(){
     lateinit var naturalLanguageAnalyzer: NaturalLanguageAnalyzer
 
     @Inject
-    lateinit var accessTokenReceiver : AccessTokenReceiver
+    lateinit var googleAccessTokenReceiver : GoogleAccessTokenReceiver
 
     private lateinit var subscription: Disposable
     private lateinit var tweet : Tweet
@@ -38,7 +38,7 @@ class DetailViewModel : BaseViewModel(){
 
     private fun getAccessTokenToCallService(service : (tweet : Tweet, token : String) -> Unit){
 
-        subscription = Observable.fromCallable {accessTokenReceiver.getOrRefreshServiceAccessTokenIfNeeded()}
+        subscription = Observable.fromCallable {googleAccessTokenReceiver.getOrRefreshServiceAccessTokenIfNeeded()}
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { onRetrieveServiceStart() }

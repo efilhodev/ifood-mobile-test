@@ -1,14 +1,18 @@
 package br.com.eduardofilho.ifood_mobile_test.network
 
+import br.com.eduardofilho.ifood_mobile_test.model.OAuthToken
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface AppRestEndpoints{
 
-    @GET("statuses/user_timeline.json")
-    fun getTweetsByScreenName(@Query("screen_name") screenName : String)  : Observable<List<Tweet>>
+    @FormUrlEncoded
+    @POST("oauth2/token")
+    fun postTwitterCredentials(@Field("grant_type") grantType : String) : Observable<OAuthToken>
+
+    @GET("1.1/statuses/user_timeline.json")
+    fun getTweetsByScreenName(@Query("screen_name") screenName : String) : Observable<List<Tweet>>
 
 }
