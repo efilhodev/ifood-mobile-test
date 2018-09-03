@@ -33,22 +33,10 @@ class DetailViewModel : BaseViewModel(){
 
     fun analyzeTweetSentiment(tweet: Tweet){
         this.tweet = tweet
-        getOrRefreshAccessServiceTokenIfNeeded()
+        getAccessTokenToCallService(::getTweetSentimentByService)
     }
 
-    private fun getTextSentimentByService(text : String, token : String){
-
-        subscription = Observable.fromCallable {naturalLanguageAnalyzer.analyzeSentimentByService(text, token)}
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { }
-                .doOnTerminate { onRetrieveServiceFinish() }
-                .subscribe(
-                        { sentiment -> onRetrieveTextSentimentSuccess(sentiment)},
-                        { e -> onRetrieveTextSentimentError(e)})
-    }
-
-    private fun getOrRefreshAccessServiceTokenIfNeeded(){
+    private fun getAccessTokenToCallService(service : (tweet : Tweet, token : String) -> Unit){
 
         subscription = Observable.fromCallable {accessTokenReceiver.getOrRefreshServiceAccessTokenIfNeeded()}
                 .subscribeOn(Schedulers.io())
@@ -56,8 +44,20 @@ class DetailViewModel : BaseViewModel(){
                 .doOnSubscribe { onRetrieveServiceStart() }
                 .doOnTerminate { }
                 .subscribe(
-                        { token -> onRetrieveAccessTokenSuccess(token)},
+                        { token -> onRetrieveAccessTokenSuccess(service, token)},
                         { e -> onRetrieveAccessTokenError(e)})
+    }
+
+    private fun getTweetSentimentByService(tweet: Tweet, token : String){
+
+        subscription = Observable.fromCallable {naturalLanguageAnalyzer.analyzeSentimentByService(tweet.text, token)}
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { }
+                .doOnTerminate { onRetrieveServiceFinish() }
+                .subscribe(
+                        { sentiment -> onRetrieveTweetSentimentSuccess(sentiment)},
+                        { e -> onRetrieveTweetSentimentError(e)})
     }
 
     private fun onRetrieveServiceStart(){
@@ -70,21 +70,32 @@ class DetailViewModel : BaseViewModel(){
         detailAnalyzerLoadingVisibility.value =  View.GONE
     }
 
-    private fun onRetrieveTextSentimentSuccess(sentiment : Sentiment){
+    private fun onRetrieveTweetSentimentSuccess(sentiment : Sentiment){
         val sentimentCategoryEnum = categorizeSentiment(sentiment)
         onSentimentAnalyzed?.invoke(sentimentCategoryEnum)
     }
 
-    private fun onRetrieveTextSentimentError(e: Throwable){
-        e.printStackTrace()
+    private fun onRetrieveAccessTokenSuccess(service : (tweet : Tweet, token : String) -> Unit,
+                                             token : String?){
+        service(tweet, token!!)
     }
 
-    private fun onRetrieveAccessTokenSuccess(token : String?){
-        getTextSentimentByService(tweet.text, token!!)
+    private fun onRetrieveTweetSentimentError(e: Throwable){
+        e.printStackTrace()
     }
 
     private fun onRetrieveAccessTokenError(e : Throwable){
         e.printStackTrace()
+    }
+
+    private fun categorizeSentiment(sentiment: Sentiment) : SentimentCategoryEnum{
+        return when{
+            sentiment.score in 0.6..1.0 && sentiment.magnitude > 2.0 -> SentimentCategoryEnum.POSITIVE
+            sentiment.score in 0.6..1.0 && sentiment.magnitude < 2.0 -> SentimentCategoryEnum.POSSIBLY_POSITIVE
+            sentiment.score in -1.0..-0.1 && sentiment.magnitude > 2.0 -> SentimentCategoryEnum.NEGATIVE
+            sentiment.score in -1.0..-0.1 && sentiment.magnitude < 2.0 -> SentimentCategoryEnum.POSSIBLY_NEGATIVE
+            else -> SentimentCategoryEnum.NEUTRAL
+        }
     }
 
     override fun onCleared() {
@@ -93,14 +104,6 @@ class DetailViewModel : BaseViewModel(){
             subscription.dispose()
         }catch (e : Exception){
             e.printStackTrace()
-        }
-    }
-
-    private fun categorizeSentiment(sentiment: Sentiment) : SentimentCategoryEnum{
-        return when{
-            sentiment.score in 0.6..1.0 && sentiment.magnitude > 1.0 -> SentimentCategoryEnum.POSITIVE
-            sentiment.score in -1.0..-0.1 && sentiment.magnitude > 1.0 -> SentimentCategoryEnum.NEGATIVE
-            else -> SentimentCategoryEnum.NEUTRAL
         }
     }
 }

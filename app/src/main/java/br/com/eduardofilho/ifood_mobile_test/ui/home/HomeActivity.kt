@@ -35,8 +35,10 @@ class HomeActivity : BaseActivity(){
         binding.rvHomeTweets.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvHomeTweets.addItemDecoration(DividerItemDecoration(this))
 
-        viewModel.loadTweets("HeyDuds")
+        //viewModel.loadTweets("HeyDuds")
         viewModel.homeTweetAdapter.onItemClick ={tweet, view -> DetailActivity.navigate(this, tweet, view)}
+
+        viewModel.onServiceError={message -> showErrorSnackBar(binding.root, message)}
     }
 
 

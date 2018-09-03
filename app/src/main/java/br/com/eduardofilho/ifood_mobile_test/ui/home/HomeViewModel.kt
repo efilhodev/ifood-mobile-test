@@ -6,10 +6,8 @@ import br.com.eduardofilho.ifood_mobile_test.App
 import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
-import br.com.eduardofilho.ifood_mobile_test.network.AccessTokenReceiver
 import br.com.eduardofilho.ifood_mobile_test.network.AppRestEndpoints
-import br.com.eduardofilho.ifood_mobile_test.utils.Mock
-import io.reactivex.Observable
+import br.com.eduardofilho.ifood_mobile_test.utils.mock.Mock
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -22,11 +20,15 @@ class HomeViewModel : BaseViewModel(){
 
     private lateinit var subscription: Disposable
 
+    var onServiceError: ( (message : String)  -> Unit)? = null
+
     val homeLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetListVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetListInfoText : MutableLiveData<String> = MutableLiveData()
     val homeTweetListInfoVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetAdapter : TweetAdapter = TweetAdapter()
+
+    val context = App.applicationContext()
 
     init {
         homeTweetAdapter.updateTweetList(Mock.getMockTweets(20))
@@ -36,49 +38,44 @@ class HomeViewModel : BaseViewModel(){
         subscription = api.getTweetsByScreenName(screenName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { onRetrieveServiceStart() }
-                .doOnTerminate { onRetrieveServiceFinish() }
+                .doOnSubscribe { onRetrieveTweetListStart() }
+                .doOnTerminate { onRetrieveTweetListFinish() }
                 .subscribe(
                         { result -> onRetrieveTweetListSuccess(result) },
                         { e -> onRetrieveTweetListError(e) }
                 )
     }
 
-
-    private fun onRetrieveServiceStart(){
-        startTweetListLoading()
+    private fun onRetrieveTweetListStart(){
+        homeTweetListVisibility.value = View.GONE
+        homeTweetListInfoVisibility.value = View.GONE
+        homeLoadingVisibility.value = View.VISIBLE
     }
 
-    private fun onRetrieveServiceFinish(){
-        finishTweetListLoading()
+    private fun onRetrieveTweetListFinish(){
+        homeLoadingVisibility.value = View.GONE
+        homeTweetListVisibility.value = View.VISIBLE
     }
 
     private fun onRetrieveTweetListSuccess(tweets : List<Tweet>){
         if(!tweets.isEmpty()){
             homeTweetAdapter.updateTweetList(tweets)
         }else{
-            showTweetListInfoText(App.applicationContext().getString(R.string.info_tweet_list_empty))
+            showTweetListInfoMessage(context.getString(R.string.info_tweet_list_empty))
         }
     }
 
     private fun onRetrieveTweetListError(e : Throwable){
-        showTweetListInfoText(e.message)
+        showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
+        onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
+
         e.printStackTrace()
     }
 
-    private fun showTweetListInfoText(message : String?){
-        homeTweetListInfoText.value = message ?: ""
+
+    private fun showTweetListInfoMessage(message : String){
+        homeTweetListInfoText.value = message
         homeTweetListInfoVisibility.value = View.VISIBLE
-    }
-
-    private fun startTweetListLoading(){
-        homeLoadingVisibility.value = View.VISIBLE
-        homeTweetListVisibility.value = View.GONE
-    }
-
-    private fun finishTweetListLoading(){
-        homeLoadingVisibility.value = View.GONE
-        homeTweetListVisibility.value = View.VISIBLE
     }
 
 

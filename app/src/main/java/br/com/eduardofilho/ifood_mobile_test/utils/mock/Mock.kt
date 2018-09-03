@@ -1,4 +1,4 @@
-package br.com.eduardofilho.ifood_mobile_test.utils
+package br.com.eduardofilho.ifood_mobile_test.utils.mock
 
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import br.com.eduardofilho.ifood_mobile_test.model.User

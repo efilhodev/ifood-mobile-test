@@ -1,14 +1,12 @@
 package br.com.eduardofilho.ifood_mobile_test.ui.detail
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -76,16 +74,22 @@ class DetailActivity : BaseActivity(){
 
     private fun setupViewBehavior(){
         binding.btnDetailTweetSentimentAnalyzer.setOnClickListener { viewModel.analyzeTweetSentiment(tweet)}
-        viewModel.onSentimentAnalyzed = {sentimentCategory -> setupSentimentInfoBehavior(sentimentCategory)}
+        viewModel.onSentimentAnalyzed = {sentimentCategory -> wrapSentimentInfoBehavior(sentimentCategory)}
     }
 
-    private fun setupSentimentInfoBehavior(sentimentCategoryEnum: SentimentCategoryEnum){
+    private fun wrapSentimentInfoBehavior(sentimentCategoryEnum: SentimentCategoryEnum){
         when(sentimentCategoryEnum){
             SentimentCategoryEnum.POSITIVE -> {
                 initSentimentInfoText("Esse é um Tweet positivo \ud83d\ude00", resources.getColor(R.color.colorPositiveTweet))
             }
+            SentimentCategoryEnum.POSSIBLY_POSITIVE -> {
+                initSentimentInfoText("Esse possivelmente é um Tweet positivo \ud83d\ude00", resources.getColor(R.color.colorPositiveTweet))
+            }
             SentimentCategoryEnum.NEUTRAL -> {
                 initSentimentInfoText("Esse é um Tweet neutro \ud83d\ude10", resources.getColor(R.color.colorNeutralTweet))
+            }
+            SentimentCategoryEnum.POSSIBLY_NEGATIVE -> {
+                initSentimentInfoText("Esse possivelmente é um Tweet negativo \uD83D\uDE14", resources.getColor(R.color.colorNegativeTweet))
             }
             SentimentCategoryEnum.NEGATIVE -> {
                 initSentimentInfoText("Esse é um Tweet negativo \ud83d\ude14", resources.getColor(R.color.colorNegativeTweet))
