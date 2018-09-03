@@ -11,8 +11,18 @@ import com.google.api.services.language.v1.CloudNaturalLanguageScopes
 class GoogleAccessTokenReceiver(val context: Context) {
 
     fun getOrRefreshServiceAccessTokenIfNeeded(): String? {
+        var token = getValidGoogleAccessToken()
+
+        if(token.isEmpty() || token == "not valid"){
+            token = refreshGoogleAccessToken()
+        }
+        return token
+    }
+
+    private fun getValidGoogleAccessToken() : String{
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
-        val currentToken = preferences.getString(ACCESS_TOKEN_PREF, "")
+
+        var currentToken = preferences.getString(ACCESS_TOKEN_PREF, "")
 
         if(!currentToken!!.isEmpty()){
             val credential = GoogleCredential()
@@ -22,8 +32,15 @@ class GoogleAccessTokenReceiver(val context: Context) {
             val seconds = credential.expiresInSeconds
             if(seconds != null && seconds > ACCESS_TOKEN_MAX_EXPIRES_TIME){
                 return currentToken
+            }else{
+                currentToken = "not valid"
             }
         }
+        return currentToken
+    }
+
+    private fun refreshGoogleAccessToken() : String{
+        val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
 
         val stream = context.resources.openRawResource(R.raw.credentials)
         val credential = GoogleCredential.fromStream(stream).createScoped(CloudNaturalLanguageScopes.all())
@@ -34,4 +51,5 @@ class GoogleAccessTokenReceiver(val context: Context) {
 
         return accessToken
     }
+
 }

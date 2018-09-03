@@ -5,16 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import br.com.eduardofilho.ifood_mobile_test.App
 import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
-import br.com.eduardofilho.ifood_mobile_test.model.OAuthToken
+import br.com.eduardofilho.ifood_mobile_test.model.TwitterOAuthToken
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import br.com.eduardofilho.ifood_mobile_test.network.AppRestEndpoints
-import br.com.eduardofilho.ifood_mobile_test.utils.TWITTER_CONSUMER_KEY
-import br.com.eduardofilho.ifood_mobile_test.utils.TWITTER_CONSUMER_SECRET
 import br.com.eduardofilho.ifood_mobile_test.utils.mock.Mock
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.Credentials
 import javax.inject.Inject
 
 class HomeViewModel : BaseViewModel(){
@@ -96,7 +93,7 @@ class HomeViewModel : BaseViewModel(){
 
     }
 
-    private fun onRetrieveOAuthTokenSuccess(oAuthToken : OAuthToken){
+    private fun onRetrieveOAuthTokenSuccess(twitterOAuthToken : TwitterOAuthToken){
 
     }
 
