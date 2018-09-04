@@ -4,4 +4,5 @@
     <string name="info_tweet_list_empty">Nenhum tweet encontrado</string>
     <string name="err_something_wrong">Desculpe, mas algo deu errado =(</string>
     <string name="hint_twitter_user">Usuário do twitter</string>
+    <string name="err_invalid_field">Campo inválido</string>
 </resources>

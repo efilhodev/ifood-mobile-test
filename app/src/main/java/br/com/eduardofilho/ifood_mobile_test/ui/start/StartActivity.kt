@@ -21,31 +21,40 @@ class StartActivity : BaseActivity(){
 
     private fun setupBindingView(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_start)
-
         viewModel = ViewModelProviders.of(this).get(StartViewModel::class.java)
         binding.viewModel = viewModel
     }
 
     private fun setupViewBehavior(){
-        viewModel.onServiceError={message -> showErrorSnackBar(binding.root, message)}
-        viewModel.onServiceSuccess={HomeActivity.navigate(this)}
-
         binding.bntStartAuthenticateAndEnter.setOnClickListener {
             if (validate()) viewModel.getTwitterOAuthToken()
+        }
+
+        viewModel.retrieveTwitterOAuthTokenSuccess = {
+            HomeActivity.navigate(this, binding.etStartTwitterUsername.text.toString())
+        }
+
+        viewModel.retrieveTwitterOAuthTokenError = {
+            message -> showErrorSnackBar(binding.root, message)
         }
     }
 
     private fun validate() : Boolean{
         if(!viewModel.validateUsernameInput(binding.etStartTwitterUsername.text.toString())){
             binding.tilStartTwitterUsername.isErrorEnabled = true
-            binding.tilStartTwitterUsername.error = "Campo inválido"
+            binding.tilStartTwitterUsername.error = getString(R.string.err_invalid_field)
+            return false
         }
 
         return true
     }
 
-
     override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {
+        if (!isConnected) {
+            showErrorSnackBar(binding.root, getString(R.string.err_not_connected))
+        } else {
+            hideErrorSnackBar()
+        }
     }
 
 }

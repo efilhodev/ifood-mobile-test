@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -19,6 +17,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import br.com.eduardofilho.ifood_mobile_test.base.BaseActivity
 import br.com.eduardofilho.ifood_mobile_test.utils.TRANSITION_KEY
+import br.com.eduardofilho.ifood_mobile_test.utils.extensions.slideDownAnimation
 
 
 class DetailActivity : BaseActivity(){
@@ -93,28 +92,16 @@ class DetailActivity : BaseActivity(){
             }
             SentimentCategoryEnum.NEGATIVE -> {
                 initSentimentInfoText("Esse é um Tweet negativo \ud83d\ude14", resources.getColor(R.color.colorNegativeTweet))
-                startSentimentInfoAnimation()
             }
         }
-        startSentimentInfoAnimation()
     }
 
     private fun initSentimentInfoText(text : String, colorResource : Int){
         binding.tvDetailTweetSentimentInfo.text = Html.fromHtml(text)
         binding.tvDetailTweetSentimentInfo.setBackgroundColor(colorResource)
+        binding.tvDetailTweetSentimentInfo.slideDownAnimation(this)
     }
 
-    private fun startSentimentInfoAnimation(){
-        val animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_top)
-        animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-                binding.tvDetailTweetSentimentInfo.visibility = View.VISIBLE
-            }
-            override fun onAnimationRepeat(animation: Animation?) {}
-            override fun onAnimationEnd(animation: Animation?) {}
-        })
-        binding.tvDetailTweetSentimentInfo.startAnimation(animation)
-    }
 
     private fun disableAnalyzerSentimentButton(){
         binding.btnDetailTweetSentimentAnalyzer.isEnabled = false

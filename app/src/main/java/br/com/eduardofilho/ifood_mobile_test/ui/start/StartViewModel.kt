@@ -20,18 +20,14 @@ class StartViewModel : BaseViewModel(){
     @Inject
     lateinit var api : AppRestEndpoints
 
-    var onServiceError: ( (message : String)  -> Unit)? = null
-    var onServiceSuccess : (() -> Unit)? = null
+    var retrieveTwitterOAuthTokenError: ( (message : String)  -> Unit)? = null
+    var retrieveTwitterOAuthTokenSuccess : (() -> Unit)? = null
 
     val startLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
 
     private lateinit var subscription: Disposable
 
     private val context = App.applicationContext()
-
-    init {
-        removeTwitterOAuthTokenAuthorization()
-    }
 
     fun getTwitterOAuthToken(){
         subscription = api.postTwitterCredentials("client_credentials")
@@ -60,12 +56,11 @@ class StartViewModel : BaseViewModel(){
 
     private fun onRetrieveOAuthTokenSuccess(twitterOAuthToken : TwitterOAuthToken){
         saveTwitterOAuthTokenAuthorization(twitterOAuthToken.getAuthorization())
-        onServiceSuccess?.invoke()
+        retrieveTwitterOAuthTokenSuccess?.invoke()
     }
 
     private fun onRetrieveOAuthTokenError(e : Throwable){
-        onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
-
+        retrieveTwitterOAuthTokenError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
         e.printStackTrace()
     }
 

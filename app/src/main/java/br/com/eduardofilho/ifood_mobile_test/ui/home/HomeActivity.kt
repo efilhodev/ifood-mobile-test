@@ -21,8 +21,11 @@ class HomeActivity : BaseActivity(){
     private lateinit var viewModel: HomeViewModel
 
     companion object {
-        fun navigate(activity : Activity){
+        fun navigate(activity : Activity, twitterScreenName : String){
+
             val intent = Intent(activity, HomeActivity::class.java)
+            intent.putExtra(String::class.simpleName, twitterScreenName)
+
             activity.startActivity(intent)
         }
     }
@@ -36,6 +39,7 @@ class HomeActivity : BaseActivity(){
     }
 
     private fun setupBindingView(){
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
@@ -49,7 +53,8 @@ class HomeActivity : BaseActivity(){
         viewModel.homeTweetAdapter.onItemClick ={tweet, view -> DetailActivity.navigate(this, tweet, view)}
         viewModel.onServiceError={message -> showErrorSnackBar(binding.root, message)}
 
-        viewModel.loadTweets("@pewdiepie")
+        val twitterScreenName = intent.getStringExtra(String::class.simpleName)
+        viewModel.loadTweets(twitterScreenName)
     }
 
 
