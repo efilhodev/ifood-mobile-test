@@ -1,6 +1,9 @@
 package br.com.eduardofilho.ifood_mobile_test.ui.home
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +19,14 @@ class HomeActivity : BaseActivity(){
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var viewModel: HomeViewModel
+
+    companion object {
+        fun navigate(activity : Activity){
+            val intent = Intent(activity, HomeActivity::class.java)
+            activity.startActivity(intent)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +46,10 @@ class HomeActivity : BaseActivity(){
         binding.rvHomeTweets.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvHomeTweets.addItemDecoration(DividerItemDecoration(this))
 
-        viewModel.getOAuthToken()
         viewModel.homeTweetAdapter.onItemClick ={tweet, view -> DetailActivity.navigate(this, tweet, view)}
-
         viewModel.onServiceError={message -> showErrorSnackBar(binding.root, message)}
+
+        viewModel.loadTweets("@pewdiepie")
     }
 
 

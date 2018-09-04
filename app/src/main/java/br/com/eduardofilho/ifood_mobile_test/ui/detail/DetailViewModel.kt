@@ -33,12 +33,12 @@ class DetailViewModel : BaseViewModel(){
 
     fun analyzeTweetSentiment(tweet: Tweet){
         this.tweet = tweet
-        getAccessTokenToCallService(::getTweetSentimentByService)
+        getGoogleAccessTokenToCallService(::getTweetSentimentByService)
     }
 
-    private fun getAccessTokenToCallService(service : (tweet : Tweet, token : String) -> Unit){
+    private fun getGoogleAccessTokenToCallService(service : (tweet : Tweet, token : String) -> Unit){
 
-        subscription = Observable.fromCallable {googleAccessTokenReceiver.getOrRefreshServiceAccessTokenIfNeeded()}
+        subscription = Observable.fromCallable {googleAccessTokenReceiver.getOrRefreshGoogleAccessTokenIfNeeded()}
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { onRetrieveServiceStart() }

@@ -7,6 +7,7 @@ import br.com.eduardofilho.ifood_mobile_test.injection.module.NaturalLanguageMod
 import br.com.eduardofilho.ifood_mobile_test.injection.module.NetworkModule
 import br.com.eduardofilho.ifood_mobile_test.ui.detail.DetailViewModel
 import br.com.eduardofilho.ifood_mobile_test.ui.home.HomeViewModel
+import br.com.eduardofilho.ifood_mobile_test.ui.start.StartViewModel
 
 abstract class BaseViewModel : ViewModel(){
     private val injector: ViewModelInjector = DaggerViewModelInjector
@@ -23,6 +24,7 @@ abstract class BaseViewModel : ViewModel(){
         when (this) {
             is HomeViewModel -> injector.inject(this)
             is DetailViewModel -> injector.inject(this)
+            is StartViewModel -> injector.inject(this)
         }
     }
 }

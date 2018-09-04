@@ -24,9 +24,9 @@ class NaturalLanguageAnalyzer{
 
     lateinit var request : CloudNaturalLanguageRequest<out GenericJson>
 
-    private fun setAccessTokenIntoGoogleCredential(token : String){
+    private fun setGoogleAccessTokenIntoGoogleCredential(googleAccessToken : String){
         credential = GoogleCredential()
-                .setAccessToken(token)
+                .setAccessToken(googleAccessToken)
                 .createScoped(CloudNaturalLanguageScopes.all())
     }
 
@@ -34,7 +34,7 @@ class NaturalLanguageAnalyzer{
 
         if(token.isEmpty()) throw IllegalStateException("Credential access token cant be empty")
 
-        setAccessTokenIntoGoogleCredential(token)
+        setGoogleAccessTokenIntoGoogleCredential(token)
 
         try {
             request = cloudNaturalLanguage

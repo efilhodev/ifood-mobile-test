@@ -10,7 +10,7 @@ import com.google.api.services.language.v1.CloudNaturalLanguageScopes
 
 class GoogleAccessTokenReceiver(val context: Context) {
 
-    fun getOrRefreshServiceAccessTokenIfNeeded(): String? {
+    fun getOrRefreshGoogleAccessTokenIfNeeded(): String? {
         var token = getValidGoogleAccessToken()
 
         if( token == "not valid"){

@@ -18,24 +18,31 @@
 
         <activity
             android:name=".ui.home.HomeActivity"
-            android:label="Home">
+            android:label="Home"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:label="Detalhes"
+            android:configChanges="orientation|screenSize"/>
+
+        <activity
+            android:name=".ui.start.StartActivity"
+            android:label="Tweet Sentiment Analyzer"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.detail.DetailActivity"
-            android:label="Detalhes"
-            android:configChanges="orientation|screenSize"/>
 
 
         <receiver
             android:name=".network.ConnectivityReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                        tools:ignore="BatteryLife" />
             </intent-filter>
         </receiver>
     </application>

@@ -29,23 +29,9 @@ class HomeViewModel : BaseViewModel(){
     val homeTweetListInfoVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetAdapter : TweetAdapter = TweetAdapter()
 
-    val context = App.applicationContext()
+    private val context = App.applicationContext()
 
-    init {
-        homeTweetAdapter.updateTweetList(Mock.getMockTweets(20))
-    }
 
-    fun getOAuthToken(){
-        subscription = api.postTwitterCredentials("client_credentials")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { onRetrieveOAuthTokenStart() }
-                .doOnTerminate { onRetrieveOAuthTokenFinish() }
-                .subscribe(
-                        { result -> onRetrieveOAuthTokenSuccess(result)},
-                        { e -> onRetrieveOAuthTokenError(e)}
-                )
-    }
 
     fun loadTweets(screenName : String){
         subscription = api.getTweetsByScreenName(screenName)
@@ -79,25 +65,6 @@ class HomeViewModel : BaseViewModel(){
     }
 
     private fun onRetrieveTweetListError(e : Throwable){
-        showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
-        onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
-
-        e.printStackTrace()
-    }
-
-    private fun onRetrieveOAuthTokenStart(){
-
-    }
-
-    private fun onRetrieveOAuthTokenFinish(){
-
-    }
-
-    private fun onRetrieveOAuthTokenSuccess(twitterOAuthToken : TwitterOAuthToken){
-
-    }
-
-    private fun onRetrieveOAuthTokenError(e : Throwable){
         showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
         onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
 
