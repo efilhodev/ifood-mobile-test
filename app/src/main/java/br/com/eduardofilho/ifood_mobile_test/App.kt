@@ -12,11 +12,6 @@ class App : Application(){
         registerConnectivityReceiver()
     }
 
-    private fun registerConnectivityReceiver(){
-        registerReceiver(ConnectivityReceiver(),
-                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-    }
-
     init {
         instance = this
 
@@ -28,5 +23,10 @@ class App : Application(){
         fun applicationContext() : Context {
             return instance!!.applicationContext
         }
+    }
+
+    private fun registerConnectivityReceiver(){
+        registerReceiver(ConnectivityReceiver(),
+                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 }

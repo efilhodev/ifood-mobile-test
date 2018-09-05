@@ -66,13 +66,14 @@ class DetailActivity : BaseActivity(){
         binding.tvDetailTweetRealName.text = tweet.user.name
         binding.tvDetailTweetScreenName.text = tweet.user.screenName
 
-
         viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
         binding.viewModel = viewModel
     }
 
     private fun setupViewBehavior(){
-        binding.btnDetailTweetSentimentAnalyzer.setOnClickListener { viewModel.analyzeTweetSentiment(tweet)}
+        binding.btnDetailTweetSentimentAnalyzer.setOnClickListener {
+            viewModel.analyzeTweetSentiment(tweet)
+        }
 
         viewModel.onSentimentAnalyzed = {
             sentimentCategory -> wrapSentimentInfoBehavior(sentimentCategory)

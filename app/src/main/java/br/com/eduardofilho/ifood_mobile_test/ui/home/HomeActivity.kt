@@ -35,10 +35,10 @@ class HomeActivity : BaseActivity(){
 
         setupBindingView()
         setupViewBehavior()
+        setupTweetListRecyclerView()
     }
 
     private fun setupBindingView(){
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
@@ -46,9 +46,6 @@ class HomeActivity : BaseActivity(){
     }
 
     private fun setupViewBehavior(){
-        binding.rvHomeTweets.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.rvHomeTweets.addItemDecoration(DividerItemDecoration(this))
-
         viewModel.homeTweetAdapter.onItemClick ={
             tweet, view -> DetailActivity.navigate(this, tweet, view)
         }
@@ -56,6 +53,11 @@ class HomeActivity : BaseActivity(){
         viewModel.retrieveTweetListError={
             message -> showErrorSnackBar(binding.root, message)
         }
+    }
+
+    private fun setupTweetListRecyclerView(){
+        binding.rvHomeTweets.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.rvHomeTweets.addItemDecoration(DividerItemDecoration(this))
 
         val twitterScreenName = intent.getStringExtra(String::class.simpleName)
         viewModel.loadTweets(twitterScreenName)

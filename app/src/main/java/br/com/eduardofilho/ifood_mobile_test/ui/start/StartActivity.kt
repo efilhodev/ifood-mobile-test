@@ -32,7 +32,7 @@ class StartActivity : BaseActivity(){
 
         viewModel.retrieveTwitterOAuthTokenSuccess = {
             HomeActivity.navigate(this, binding.etStartTwitterUsername.text.toString())
-            resetField()
+            resetTwitterUsernameField()
         }
 
         viewModel.retrieveTwitterOAuthTokenError = {
@@ -50,7 +50,7 @@ class StartActivity : BaseActivity(){
         return true
     }
 
-    private fun resetField(){
+    private fun resetTwitterUsernameField(){
         binding.etStartTwitterUsername.text?.clear()
         binding.tilStartTwitterUsername.isErrorEnabled = false
     }
@@ -62,5 +62,4 @@ class StartActivity : BaseActivity(){
             hideErrorSnackBar()
         }
     }
-
 }

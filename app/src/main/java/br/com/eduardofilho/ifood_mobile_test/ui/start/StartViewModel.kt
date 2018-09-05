@@ -37,8 +37,8 @@ class StartViewModel : BaseViewModel(){
                 .doOnSubscribe { onRetrieveOAuthTokenStart() }
                 .doOnTerminate { onRetrieveOAuthTokenFinish() }
                 .subscribe(
-                        { result -> onRetrieveOAuthTokenSuccess(result)},
-                        { e -> onRetrieveOAuthTokenError(e)}
+                        { result -> onRetrieveTwitterOAuthTokenSuccess(result)},
+                        { e -> onRetrieveTwitterOAuthTokenError(e)}
                 )
     }
 
@@ -59,13 +59,13 @@ class StartViewModel : BaseViewModel(){
         startButtonVisibility.value = View.VISIBLE
     }
 
-    private fun onRetrieveOAuthTokenSuccess(twitterOAuthToken : TwitterOAuthToken){
+    private fun onRetrieveTwitterOAuthTokenSuccess(twitterOAuthToken : TwitterOAuthToken){
         saveTwitterOAuthTokenAuthorization(twitterOAuthToken.getAuthorization())
 
         retrieveTwitterOAuthTokenSuccess?.invoke()
     }
 
-    private fun onRetrieveOAuthTokenError(e : Throwable){
+    private fun onRetrieveTwitterOAuthTokenError(e : Throwable){
         retrieveTwitterOAuthTokenError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
         e.printStackTrace()
     }
@@ -78,5 +78,14 @@ class StartViewModel : BaseViewModel(){
     private fun removeOldTwitterOAuthTokenAuthorization(){
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
         preferences.edit().remove(TWITTER_ACCESS_TOKEN_PREF).apply()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        try {
+            subscription.dispose()
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
     }
 }

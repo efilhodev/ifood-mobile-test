@@ -17,12 +17,12 @@ import java.io.IOException
 class NaturalLanguageAnalyzer{
 
     private lateinit var credential : GoogleCredential
+    private lateinit var request : CloudNaturalLanguageRequest<out GenericJson>
 
     private val cloudNaturalLanguage = CloudNaturalLanguage.Builder(NetHttpTransport(),
             JacksonFactory.getDefaultInstance(),
             HttpRequestInitializer { request -> credential.initialize(request) }).build()
 
-    lateinit var request : CloudNaturalLanguageRequest<out GenericJson>
 
     private fun setGoogleAccessTokenIntoGoogleCredential(googleAccessToken : String){
         credential = GoogleCredential()

@@ -8,7 +8,7 @@ import br.com.eduardofilho.ifood_mobile_test.utils.PREFERENCES
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.services.language.v1.CloudNaturalLanguageScopes
 
-class GoogleAccessTokenReceiver(val context: Context) {
+class GoogleAccessTokenProvider(val context: Context) {
 
     fun getOrRefreshGoogleAccessTokenIfNeeded(): String? {
         var token = getValidGoogleAccessToken()
@@ -21,7 +21,6 @@ class GoogleAccessTokenReceiver(val context: Context) {
 
     private fun getValidGoogleAccessToken() : String{
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
-
         var currentToken = preferences.getString(GOOGLE_ACCESS_TOKEN_PREF, "not valid")
 
         if(!currentToken!!.isEmpty()){
@@ -41,9 +40,9 @@ class GoogleAccessTokenReceiver(val context: Context) {
 
     private fun refreshGoogleAccessToken() : String{
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
-
         val stream = context.resources.openRawResource(R.raw.credentials)
         val credential = GoogleCredential.fromStream(stream).createScoped(CloudNaturalLanguageScopes.all())
+
         credential.refreshToken()
 
         val accessToken = credential.accessToken

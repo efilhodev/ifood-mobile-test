@@ -19,6 +19,8 @@ class HomeViewModel : BaseViewModel(){
 
     private lateinit var subscription: Disposable
 
+    private val context = App.applicationContext()
+
     var retrieveTweetListError: ( (message : String)  -> Unit)? = null
 
     val homeLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
@@ -26,8 +28,6 @@ class HomeViewModel : BaseViewModel(){
     val homeTweetListInfoText : MutableLiveData<String> = MutableLiveData()
     val homeTweetListInfoVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetAdapter : TweetAdapter = TweetAdapter()
-
-    private val context = App.applicationContext()
 
     fun loadTweets(screenName : String){
         subscription = api.getTweetsByScreenName(screenName)
@@ -61,18 +61,17 @@ class HomeViewModel : BaseViewModel(){
     }
 
     private fun onRetrieveTweetListError(e : Throwable){
-        showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
         retrieveTweetListError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
+
+        showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
 
         e.printStackTrace()
     }
-
 
     private fun showTweetListInfoMessage(message : String){
         homeTweetListInfoText.value = message
         homeTweetListInfoVisibility.value = View.VISIBLE
     }
-
 
     override fun onCleared() {
         super.onCleared()
