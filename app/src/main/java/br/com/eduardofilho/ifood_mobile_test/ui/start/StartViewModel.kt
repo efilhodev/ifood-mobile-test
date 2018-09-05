@@ -24,6 +24,7 @@ class StartViewModel : BaseViewModel(){
     var retrieveTwitterOAuthTokenSuccess : (() -> Unit)? = null
 
     val startLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
+    val startButtonVisibility : MutableLiveData<Int> = MutableLiveData()
 
     private lateinit var subscription: Disposable
 
@@ -48,12 +49,14 @@ class StartViewModel : BaseViewModel(){
 
     private fun onRetrieveOAuthTokenStart(){
         startLoadingVisibility.value = View.VISIBLE
+        startButtonVisibility.value = View.INVISIBLE
 
         removeOldTwitterOAuthTokenAuthorization()
     }
 
     private fun onRetrieveOAuthTokenFinish(){
         startLoadingVisibility.value = View.GONE
+        startButtonVisibility.value = View.VISIBLE
     }
 
     private fun onRetrieveOAuthTokenSuccess(twitterOAuthToken : TwitterOAuthToken){

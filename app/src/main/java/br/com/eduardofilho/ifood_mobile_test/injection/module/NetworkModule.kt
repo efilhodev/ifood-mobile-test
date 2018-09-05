@@ -44,15 +44,16 @@ object NetworkModule {
     @Reusable
     @JvmStatic
     internal fun provideOkHttpClient() : OkHttpClient{
-        val preferences = App.applicationContext().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
-
-        val authorization = preferences.getString(TWITTER_ACCESS_TOKEN_PREF,
-                Credentials.basic(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET))
 
         return OkHttpClient.Builder()
-                .addInterceptor { it.proceed(it.request().newBuilder()
-                    .addHeader("Authorization", authorization!!)
-                    .build())
+                .addInterceptor {
+
+                    val preferences = App.applicationContext().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
+                    val authorization = preferences.getString(TWITTER_ACCESS_TOKEN_PREF, Credentials.basic(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET))
+
+                    it.proceed(it.request().newBuilder()
+                        .addHeader("Authorization",authorization!!)
+                        .build())
         }.build()
     }
 }

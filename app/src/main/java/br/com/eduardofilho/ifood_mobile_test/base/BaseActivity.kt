@@ -1,8 +1,5 @@
 package br.com.eduardofilho.ifood_mobile_test.base
 
-import android.content.IntentFilter
-import android.net.ConnectivityManager
-import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.com.eduardofilho.ifood_mobile_test.network.ConnectivityReceiver
@@ -13,12 +10,6 @@ abstract class BaseActivity : AppCompatActivity(), ConnectivityReceiver.Connecti
     private var mSnackBar : Snackbar? = null
 
     abstract fun onNetworkConnectionChangedStatus(isConnected: Boolean)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        registerReceiver(ConnectivityReceiver(),
-                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-    }
 
     override fun onResume() {
         super.onResume()

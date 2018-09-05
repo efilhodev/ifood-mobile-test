@@ -8,4 +8,4 @@ import kotlinx.android.parcel.Parcelize
 data class User(@SerializedName("id") val id : Long,
                 @SerializedName("name") val name : String,
                 @SerializedName("screen_name") val screenName : String,
-                @SerializedName("url") val url : String) : Parcelable
+                @SerializedName("url") val url : String?) : Parcelable

@@ -1,7 +1,7 @@
 package br.com.eduardofilho.ifood_mobile_test.utils
 
 const val BASE_URL : String = "https://api.twitter.com/"
-const val APP_DATE_PATTERN = "yyyy-MM-dd HH:mm"
+const val APP_DATE_PATTERN = "dd-MM-yyyy HH:mm"
 const val PREFERENCES = "PREFERENCES"
 const val GOOGLE_ACCESS_TOKEN_PREF = "GOOGLE_ACCESS_TOKEN_PREF"
 const val TWITTER_ACCESS_TOKEN_PREF = "TWITTER_ACCESS_TOKEN_PREF"

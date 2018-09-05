@@ -41,7 +41,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_start_twitter_username"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,7 +61,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_start_twitter_username">
+            app:layout_constraintTop_toBottomOf="@+id/til_start_twitter_username"
+            app:mutableVisibility="@{viewModel.getStartButtonVisibility()}">
 
             <Button
                 android:id="@+id/bnt_start_authenticate_and_enter"
