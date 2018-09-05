@@ -73,7 +73,14 @@ class DetailActivity : BaseActivity(){
 
     private fun setupViewBehavior(){
         binding.btnDetailTweetSentimentAnalyzer.setOnClickListener { viewModel.analyzeTweetSentiment(tweet)}
-        viewModel.onSentimentAnalyzed = {sentimentCategory -> wrapSentimentInfoBehavior(sentimentCategory)}
+
+        viewModel.onSentimentAnalyzed = {
+            sentimentCategory -> wrapSentimentInfoBehavior(sentimentCategory)
+        }
+
+        viewModel.onServiceError = {
+            message -> showErrorSnackBar(binding.root, message)
+        }
     }
 
     private fun wrapSentimentInfoBehavior(sentimentCategoryEnum: SentimentCategoryEnum){

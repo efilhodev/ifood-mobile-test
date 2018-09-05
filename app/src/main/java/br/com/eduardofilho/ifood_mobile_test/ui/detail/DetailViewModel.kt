@@ -2,6 +2,8 @@ package br.com.eduardofilho.ifood_mobile_test.ui.detail
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import br.com.eduardofilho.ifood_mobile_test.App
+import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
 import br.com.eduardofilho.ifood_mobile_test.model.SentimentCategoryEnum
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
@@ -26,10 +28,12 @@ class DetailViewModel : BaseViewModel(){
     private lateinit var tweet : Tweet
 
     var onSentimentAnalyzed: ((SentimentCategoryEnum) -> Unit)? = null
+    var onServiceError: ((String) -> Unit)? = null
 
     val detailAnalyzerLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
     val detailAnalyzerButtonVisibility : MutableLiveData<Int> = MutableLiveData()
 
+    private val context = App.applicationContext()
 
     fun analyzeTweetSentiment(tweet: Tweet){
         this.tweet = tweet
@@ -81,10 +85,12 @@ class DetailViewModel : BaseViewModel(){
     }
 
     private fun onRetrieveTweetSentimentError(e: Throwable){
+        onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
         e.printStackTrace()
     }
 
     private fun onRetrieveAccessTokenError(e : Throwable){
+        onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
         e.printStackTrace()
     }
 

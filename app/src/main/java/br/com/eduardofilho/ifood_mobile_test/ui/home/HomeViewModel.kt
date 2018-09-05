@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import br.com.eduardofilho.ifood_mobile_test.App
 import br.com.eduardofilho.ifood_mobile_test.R
 import br.com.eduardofilho.ifood_mobile_test.base.BaseViewModel
-import br.com.eduardofilho.ifood_mobile_test.model.TwitterOAuthToken
 import br.com.eduardofilho.ifood_mobile_test.model.Tweet
 import br.com.eduardofilho.ifood_mobile_test.network.AppRestEndpoints
-import br.com.eduardofilho.ifood_mobile_test.utils.mock.Mock
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -21,7 +19,7 @@ class HomeViewModel : BaseViewModel(){
 
     private lateinit var subscription: Disposable
 
-    var onServiceError: ( (message : String)  -> Unit)? = null
+    var retrieveTweetListError: ( (message : String)  -> Unit)? = null
 
     val homeLoadingVisibility : MutableLiveData<Int> = MutableLiveData()
     val homeTweetListVisibility : MutableLiveData<Int> = MutableLiveData()
@@ -30,8 +28,6 @@ class HomeViewModel : BaseViewModel(){
     val homeTweetAdapter : TweetAdapter = TweetAdapter()
 
     private val context = App.applicationContext()
-
-
 
     fun loadTweets(screenName : String){
         subscription = api.getTweetsByScreenName(screenName)
@@ -66,7 +62,7 @@ class HomeViewModel : BaseViewModel(){
 
     private fun onRetrieveTweetListError(e : Throwable){
         showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
-        onServiceError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
+        retrieveTweetListError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
 
         e.printStackTrace()
     }

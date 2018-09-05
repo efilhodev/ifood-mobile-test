@@ -32,6 +32,7 @@ class StartActivity : BaseActivity(){
 
         viewModel.retrieveTwitterOAuthTokenSuccess = {
             HomeActivity.navigate(this, binding.etStartTwitterUsername.text.toString())
+            resetField()
         }
 
         viewModel.retrieveTwitterOAuthTokenError = {
@@ -47,6 +48,11 @@ class StartActivity : BaseActivity(){
         }
 
         return true
+    }
+
+    private fun resetField(){
+        binding.etStartTwitterUsername.text?.clear()
+        binding.tilStartTwitterUsername.isErrorEnabled = false
     }
 
     override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {

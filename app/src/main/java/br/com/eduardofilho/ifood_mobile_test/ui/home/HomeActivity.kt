@@ -3,7 +3,6 @@ package br.com.eduardofilho.ifood_mobile_test.ui.home
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,8 +49,13 @@ class HomeActivity : BaseActivity(){
         binding.rvHomeTweets.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvHomeTweets.addItemDecoration(DividerItemDecoration(this))
 
-        viewModel.homeTweetAdapter.onItemClick ={tweet, view -> DetailActivity.navigate(this, tweet, view)}
-        viewModel.onServiceError={message -> showErrorSnackBar(binding.root, message)}
+        viewModel.homeTweetAdapter.onItemClick ={
+            tweet, view -> DetailActivity.navigate(this, tweet, view)
+        }
+
+        viewModel.retrieveTweetListError={
+            message -> showErrorSnackBar(binding.root, message)
+        }
 
         val twitterScreenName = intent.getStringExtra(String::class.simpleName)
         viewModel.loadTweets(twitterScreenName)
