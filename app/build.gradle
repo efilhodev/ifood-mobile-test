@@ -26,39 +26,63 @@ android {
     androidExtensions {
         experimental = true
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+ext {
+    appcompat_version = '1.0.0-rc02'
+    material_ripple_version = '1.0.2'
+    recycler_view_version = '1.0.0-rc02'
+    material_version = '1.0.0-rc01'
+    constraint_layout_version = '2.0.0-alpha2'
+    lifecycle_version = '2.0.0-rc01'
+    data_binding_version = '3.3.0-alpha08'
+    gson_version = 'gson:2.8.5'
+    retrofit_converter_gson_version = 'converter-gson:2.2.0'
+    retrofit_version = '2.4.0'
+    dagger2_version = '2.16'
+    google_api_client_version = '1.22.0'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    //Kotlin
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.61"
+
+    //App Compat
     implementation "androidx.appcompat:appcompat:$appcompat_version"
 
     //Material Ripple
-    implementation 'com.balysv:material-ripple:1.0.2'
+    implementation "com.balysv:material-ripple:$material_ripple_version"
 
     // RecyclerView
-    implementation "androidx.recyclerview:recyclerview:$appcompat_version"
+    implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
 
     // Support Design
-    implementation "com.google.android.material:material:$appcompat_version"
+    implementation "com.google.android.material:material:$material_version"
 
     // Constraint Layout
-    implementation "androidx.constraintlayout:constraintlayout:2.0.0-alpha2"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
     // LiveData & ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     // Data binding
-    kapt "androidx.databinding:databinding-compiler:3.3.0-alpha08"
+    kapt "androidx.databinding:databinding-compiler:$data_binding_version"
 
     //Gson
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation "com.google.code.gson:$gson_version"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
-    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
+    implementation "com.squareup.retrofit2:$retrofit_converter_gson_version"
 
     // Dagger 2
     implementation "com.google.dagger:dagger:$dagger2_version"
@@ -70,23 +94,23 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
 
     //Google API Client Libraries
-    implementation("com.google.http-client:google-http-client:$googleApiClientVersion") {
+    implementation("com.google.http-client:google-http-client:$google_api_client_version") {
         exclude module: 'httpclient'
         exclude module: 'jsr305'
     }
-    implementation("com.google.api-client:google-api-client-android:$googleApiClientVersion"){
+    implementation("com.google.api-client:google-api-client-android:$google_api_client_version"){
         exclude module: 'httpclient'
         exclude module: 'jsr305'
     }
-    implementation("com.google.apis:google-api-services-language:v1-rev386-$googleApiClientVersion") {
+    implementation("com.google.apis:google-api-services-language:v1-rev386-$google_api_client_version") {
         exclude module: 'httpclient'
         exclude module: 'jsr305'
     }
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.8'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.61"
 }
 
 task copySecretKey(type: Copy) {

@@ -9,8 +9,8 @@ import br.com.eduardofilho.ifood_mobile_test.databinding.ActivityStartBinding
 import br.com.eduardofilho.ifood_mobile_test.ui.home.HomeActivity
 
 class StartActivity : BaseActivity(){
-    private lateinit var binding: ActivityStartBinding
-    private lateinit var viewModel: StartViewModel
+    lateinit var binding: ActivityStartBinding
+    lateinit var viewModel: StartViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class StartActivity : BaseActivity(){
 
     private fun setupViewBehavior(){
         binding.bntStartAuthenticateAndEnter.setOnClickListener {
-            if (validate()) viewModel.getTwitterOAuthToken()
+            if (validate(binding.etStartTwitterUsername.text.toString())) viewModel.getTwitterOAuthToken()
         }
 
         viewModel.retrieveTwitterOAuthTokenSuccess = {
@@ -40,8 +40,8 @@ class StartActivity : BaseActivity(){
         }
     }
 
-    private fun validate() : Boolean{
-        if(!viewModel.validateUsernameInput(binding.etStartTwitterUsername.text.toString())){
+    fun validate(twitterUsername : String) : Boolean{
+        if(!viewModel.validateUsernameInput(twitterUsername)){
             binding.tilStartTwitterUsername.isErrorEnabled = true
             binding.tilStartTwitterUsername.error = getString(R.string.err_invalid_field)
             return false
@@ -50,7 +50,7 @@ class StartActivity : BaseActivity(){
         return true
     }
 
-    private fun resetTwitterUsernameField(){
+    fun resetTwitterUsernameField(){
         binding.etStartTwitterUsername.text?.clear()
         binding.tilStartTwitterUsername.isErrorEnabled = false
     }

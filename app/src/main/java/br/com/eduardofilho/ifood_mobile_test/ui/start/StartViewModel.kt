@@ -43,7 +43,7 @@ class StartViewModel : BaseViewModel(){
     }
 
     fun validateUsernameInput(username : String) : Boolean{
-        if(username.isEmpty()) return false
+        if(username.isEmpty() || username.contains(" ")) return false
         return true
     }
 
