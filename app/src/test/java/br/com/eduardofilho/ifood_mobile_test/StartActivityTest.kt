@@ -29,11 +29,12 @@ class StartActivityTest{
 
     @Test
     fun testInputValidate(){
+        Assert.assertFalse(activity.binding.tilStartTwitterUsername.isErrorEnabled)
         Assert.assertTrue(activity.validate("ifood"))
-        Assert.assertTrue(activity.validate("1234"))
-        Assert.assertTrue(activity.validate("1234*"))
-        Assert.assertFalse(activity.validate(""))
+        Assert.assertFalse(activity.binding.tilStartTwitterUsername.isErrorEnabled)
+
         Assert.assertFalse(activity.validate("i food"))
+        Assert.assertTrue(activity.binding.tilStartTwitterUsername.isErrorEnabled)
     }
 
     @Test

@@ -47,35 +47,35 @@ class StartViewModel : BaseViewModel(){
         return true
     }
 
-    private fun onRetrieveOAuthTokenStart(){
+    fun onRetrieveOAuthTokenStart(){
         startLoadingVisibility.value = View.VISIBLE
         startButtonVisibility.value = View.INVISIBLE
 
         removeOldTwitterOAuthTokenAuthorization()
     }
 
-    private fun onRetrieveOAuthTokenFinish(){
+    fun onRetrieveOAuthTokenFinish(){
         startLoadingVisibility.value = View.GONE
         startButtonVisibility.value = View.VISIBLE
     }
 
-    private fun onRetrieveTwitterOAuthTokenSuccess(twitterOAuthToken : TwitterOAuthToken){
+    fun onRetrieveTwitterOAuthTokenSuccess(twitterOAuthToken : TwitterOAuthToken){
         saveTwitterOAuthTokenAuthorization(twitterOAuthToken.getAuthorization())
 
         retrieveTwitterOAuthTokenSuccess?.invoke()
     }
 
-    private fun onRetrieveTwitterOAuthTokenError(e : Throwable){
+    fun onRetrieveTwitterOAuthTokenError(e : Throwable){
         retrieveTwitterOAuthTokenError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
         e.printStackTrace()
     }
 
-    private fun saveTwitterOAuthTokenAuthorization(authorization : String){
+    fun saveTwitterOAuthTokenAuthorization(authorization : String){
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
         preferences.edit().putString(TWITTER_ACCESS_TOKEN_PREF, authorization).apply()
     }
 
-    private fun removeOldTwitterOAuthTokenAuthorization(){
+    fun removeOldTwitterOAuthTokenAuthorization(){
         val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
         preferences.edit().remove(TWITTER_ACCESS_TOKEN_PREF).apply()
     }
