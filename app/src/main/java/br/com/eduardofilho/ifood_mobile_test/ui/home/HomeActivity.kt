@@ -16,8 +16,8 @@ import br.com.eduardofilho.ifood_mobile_test.utils.DividerItemDecoration
 
 class HomeActivity : BaseActivity(){
 
-    private lateinit var binding: ActivityHomeBinding
-    private lateinit var viewModel: HomeViewModel
+    lateinit var binding: ActivityHomeBinding
+    lateinit var viewModel: HomeViewModel
 
     companion object {
         fun navigate(activity : Activity, twitterScreenName : String){
@@ -36,6 +36,7 @@ class HomeActivity : BaseActivity(){
         setupBindingView()
         setupViewBehavior()
         setupTweetListRecyclerView()
+
     }
 
     private fun setupBindingView(){
@@ -55,14 +56,16 @@ class HomeActivity : BaseActivity(){
         }
     }
 
-    private fun setupTweetListRecyclerView(){
+    fun setupTweetListRecyclerView(){
         binding.rvHomeTweets.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvHomeTweets.addItemDecoration(DividerItemDecoration(this))
 
-        val twitterScreenName = intent.getStringExtra(String::class.simpleName)
-        viewModel.loadTweets(twitterScreenName)
+        loadTweetsFromScreenName(intent.getStringExtra(String::class.simpleName))
     }
 
+    private fun loadTweetsFromScreenName(twitterScreenName : String){
+        viewModel.loadTweets(twitterScreenName)
+    }
 
     override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {
         if (!isConnected) {

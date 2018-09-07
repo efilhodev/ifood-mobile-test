@@ -22,8 +22,8 @@ import br.com.eduardofilho.ifood_mobile_test.utils.extensions.slideDownAnimation
 
 class DetailActivity : BaseActivity(){
 
-    private lateinit var binding : ActivityDetailBinding
-    private lateinit var viewModel : DetailViewModel
+    lateinit var binding : ActivityDetailBinding
+    lateinit var viewModel : DetailViewModel
     private lateinit var tweet : Tweet
 
     companion object {
@@ -84,7 +84,7 @@ class DetailActivity : BaseActivity(){
         }
     }
 
-    private fun wrapSentimentInfoBehavior(sentimentCategoryEnum: SentimentCategoryEnum){
+    fun wrapSentimentInfoBehavior(sentimentCategoryEnum: SentimentCategoryEnum){
         when(sentimentCategoryEnum){
             SentimentCategoryEnum.POSITIVE -> {
                 initSentimentInfoText("Esse é um Tweet positivo \ud83d\ude00", resources.getColor(R.color.colorPositiveTweet))
@@ -104,19 +104,19 @@ class DetailActivity : BaseActivity(){
         }
     }
 
-    private fun initSentimentInfoText(text : String, colorResource : Int){
+    fun initSentimentInfoText(text : String, colorResource : Int){
         binding.tvDetailTweetSentimentInfo.text = Html.fromHtml(text)
         binding.tvDetailTweetSentimentInfo.setBackgroundColor(colorResource)
         binding.tvDetailTweetSentimentInfo.slideDownAnimation(this)
     }
 
 
-    private fun disableAnalyzerSentimentButton(){
+    fun disableAnalyzerSentimentButton(){
         binding.btnDetailTweetSentimentAnalyzer.isEnabled = false
         binding.btnDetailTweetSentimentAnalyzer.alpha = 0.5f
     }
 
-    private fun enableAnalyzerSentimentButton(){
+    fun enableAnalyzerSentimentButton(){
         binding.btnDetailTweetSentimentAnalyzer.isEnabled = true
         binding.btnDetailTweetSentimentAnalyzer.alpha = 1.0f
     }

@@ -1,4 +1,4 @@
-package br.com.eduardofilho.ifood_mobile_test
+package br.com.eduardofilho.ifood_mobile_test.start
 
 import android.os.Build
 import br.com.eduardofilho.ifood_mobile_test.ui.start.StartActivity

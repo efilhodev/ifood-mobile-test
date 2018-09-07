@@ -1,8 +1,9 @@
-package br.com.eduardofilho.ifood_mobile_test
+package br.com.eduardofilho.ifood_mobile_test.start
 
 import android.content.Context
 import android.os.Build
 import android.view.View
+import br.com.eduardofilho.ifood_mobile_test.App
 import br.com.eduardofilho.ifood_mobile_test.model.TwitterOAuthToken
 import br.com.eduardofilho.ifood_mobile_test.ui.start.StartActivity
 import br.com.eduardofilho.ifood_mobile_test.ui.start.StartViewModel
@@ -31,6 +32,7 @@ class StartViewModelTest{
     fun testViewModel(){
         Assert.assertNotNull(viewModel)
     }
+
 
     @Test
     fun testValidateUsernameInput(){
@@ -101,10 +103,10 @@ class StartViewModelTest{
     @Test
     fun testRemoveOldTwitterOAuthTokenAuthorization(){
         val preferences = App.applicationContext().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
-        preferences.edit().putString(TWITTER_ACCESS_TOKEN_PREF, "MockAuthorization").apply()
+        preferences.edit().putString(TWITTER_ACCESS_TOKEN_PREF, "MockType MOCK-1337-TOKEN").apply()
 
         var result = preferences.getString(TWITTER_ACCESS_TOKEN_PREF, "")
-        Assert.assertEquals("MockAuthorization", result)
+        Assert.assertEquals("MockType MOCK-1337-TOKEN", result)
 
         viewModel.removeOldTwitterOAuthTokenAuthorization()
 

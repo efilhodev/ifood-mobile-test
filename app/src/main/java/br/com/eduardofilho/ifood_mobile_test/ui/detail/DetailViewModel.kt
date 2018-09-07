@@ -64,12 +64,12 @@ class DetailViewModel : BaseViewModel(){
                         { e -> onRetrieveTweetSentimentError(e)})
     }
 
-    private fun onRetrieveServiceStart(){
+    fun onRetrieveServiceStart(){
         detailAnalyzerButtonVisibility.value = View.INVISIBLE
         detailAnalyzerLoadingVisibility.value =  View.VISIBLE
     }
 
-    private fun onRetrieveServiceFinish(){
+    fun onRetrieveServiceFinish(){
         detailAnalyzerButtonVisibility.value = View.VISIBLE
         detailAnalyzerLoadingVisibility.value =  View.GONE
     }
@@ -94,12 +94,12 @@ class DetailViewModel : BaseViewModel(){
         e.printStackTrace()
     }
 
-    private fun categorizeSentiment(sentiment: Sentiment) : SentimentCategoryEnum{
+    fun categorizeSentiment(sentiment: Sentiment) : SentimentCategoryEnum{
         return when{
-            sentiment.score in 0.6..1.0 && sentiment.magnitude > 2.0 -> SentimentCategoryEnum.POSITIVE
-            sentiment.score in 0.6..1.0 && sentiment.magnitude < 2.0 -> SentimentCategoryEnum.POSSIBLY_POSITIVE
-            sentiment.score in -1.0..-0.1 && sentiment.magnitude > 2.0 -> SentimentCategoryEnum.NEGATIVE
-            sentiment.score in -1.0..-0.1 && sentiment.magnitude < 2.0 -> SentimentCategoryEnum.POSSIBLY_NEGATIVE
+            sentiment.score in 0.2..1.0 && sentiment.magnitude >= 2.0 -> SentimentCategoryEnum.POSITIVE
+            sentiment.score in 0.2..1.0 && sentiment.magnitude < 2.0 -> SentimentCategoryEnum.POSSIBLY_POSITIVE
+            sentiment.score in -1.0..-0.2 && sentiment.magnitude >= 2.0 -> SentimentCategoryEnum.NEGATIVE
+            sentiment.score in -1.0..-0.2 && sentiment.magnitude < 2.0 -> SentimentCategoryEnum.POSSIBLY_NEGATIVE
             else -> SentimentCategoryEnum.NEUTRAL
         }
     }

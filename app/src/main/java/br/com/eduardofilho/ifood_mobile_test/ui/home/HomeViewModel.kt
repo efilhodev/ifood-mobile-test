@@ -41,18 +41,18 @@ class HomeViewModel : BaseViewModel(){
                 )
     }
 
-    private fun onRetrieveTweetListStart(){
+    fun onRetrieveTweetListStart(){
         homeTweetListVisibility.value = View.GONE
         homeTweetListInfoVisibility.value = View.GONE
         homeLoadingVisibility.value = View.VISIBLE
     }
 
-    private fun onRetrieveTweetListFinish(){
+    fun onRetrieveTweetListFinish(){
         homeLoadingVisibility.value = View.GONE
         homeTweetListVisibility.value = View.VISIBLE
     }
 
-    private fun onRetrieveTweetListSuccess(tweets : List<Tweet>){
+    fun onRetrieveTweetListSuccess(tweets : List<Tweet>){
         if(!tweets.isEmpty()){
             homeTweetAdapter.updateTweetList(tweets)
         }else{
@@ -60,7 +60,7 @@ class HomeViewModel : BaseViewModel(){
         }
     }
 
-    private fun onRetrieveTweetListError(e : Throwable){
+    fun onRetrieveTweetListError(e : Throwable){
         retrieveTweetListError?.invoke(e.message ?: context.getString(R.string.err_something_wrong))
 
         showTweetListInfoMessage(context.getString(R.string.err_something_wrong))
@@ -68,7 +68,7 @@ class HomeViewModel : BaseViewModel(){
         e.printStackTrace()
     }
 
-    private fun showTweetListInfoMessage(message : String){
+    fun showTweetListInfoMessage(message : String){
         homeTweetListInfoText.value = message
         homeTweetListInfoVisibility.value = View.VISIBLE
     }
