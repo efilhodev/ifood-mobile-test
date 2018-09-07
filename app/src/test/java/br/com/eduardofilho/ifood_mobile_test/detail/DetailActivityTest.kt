@@ -50,22 +50,22 @@ class DetailActivityTest {
 
     @Test
     fun testInitSentimentInfoText(){
-        activity.initSentimentInfoText("Mock positive sentiment test", R.color.colorPositiveTweet)
+        activity.initSentimentInfoText("Mock positive sentiment test", activity.getColor(R.color.colorPositiveTweet))
         Assert.assertEquals("Mock positive sentiment test", activity.binding.tvDetailTweetSentimentInfo.text.toString())
 
         var backgroundColor = (activity.binding.tvDetailTweetSentimentInfo.background as ColorDrawable).color
         var textColor = activity.binding.tvDetailTweetSentimentInfo.currentTextColor
 
-        Assert.assertEquals(R.color.colorPositiveTweet, backgroundColor)
+        Assert.assertEquals(activity.resources.getColor(R.color.colorPositiveTweet), backgroundColor)
         Assert.assertEquals(activity.resources.getColor(android.R.color.darker_gray), textColor)
 
-        activity.initSentimentInfoText("Mock negative sentiment test", R.color.colorNegativeTweet)
+        activity.initSentimentInfoText("Mock negative sentiment test", activity.getColor(R.color.colorNegativeTweet))
         Assert.assertEquals("Mock negative sentiment test", activity.binding.tvDetailTweetSentimentInfo.text.toString())
 
         backgroundColor = (activity.binding.tvDetailTweetSentimentInfo.background as ColorDrawable).color
         textColor = activity.binding.tvDetailTweetSentimentInfo.currentTextColor
 
-        Assert.assertEquals(R.color.colorNegativeTweet, backgroundColor)
+        Assert.assertEquals(activity.resources.getColor(R.color.colorNegativeTweet), backgroundColor)
         Assert.assertEquals(activity.resources.getColor(android.R.color.white), textColor)
     }
 
