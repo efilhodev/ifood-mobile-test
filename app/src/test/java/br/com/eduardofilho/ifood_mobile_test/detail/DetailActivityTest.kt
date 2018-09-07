@@ -50,12 +50,23 @@ class DetailActivityTest {
 
     @Test
     fun testInitSentimentInfoText(){
-        activity.initSentimentInfoText("Mock sentiment test", R.color.colorPrimary)
-        Assert.assertEquals("Mock sentiment test", activity.binding.tvDetailTweetSentimentInfo.text.toString())
+        activity.initSentimentInfoText("Mock positive sentiment test", R.color.colorPositiveTweet)
+        Assert.assertEquals("Mock positive sentiment test", activity.binding.tvDetailTweetSentimentInfo.text.toString())
 
-        val view = activity.binding.tvDetailTweetSentimentInfo.background as ColorDrawable
-        val color = view.color
-        Assert.assertEquals(R.color.colorPrimary, color)
+        var backgroundColor = (activity.binding.tvDetailTweetSentimentInfo.background as ColorDrawable).color
+        var textColor = activity.binding.tvDetailTweetSentimentInfo.currentTextColor
+
+        Assert.assertEquals(R.color.colorPositiveTweet, backgroundColor)
+        Assert.assertEquals(activity.resources.getColor(android.R.color.darker_gray), textColor)
+
+        activity.initSentimentInfoText("Mock negative sentiment test", R.color.colorNegativeTweet)
+        Assert.assertEquals("Mock negative sentiment test", activity.binding.tvDetailTweetSentimentInfo.text.toString())
+
+        backgroundColor = (activity.binding.tvDetailTweetSentimentInfo.background as ColorDrawable).color
+        textColor = activity.binding.tvDetailTweetSentimentInfo.currentTextColor
+
+        Assert.assertEquals(R.color.colorNegativeTweet, backgroundColor)
+        Assert.assertEquals(activity.resources.getColor(android.R.color.white), textColor)
     }
 
     @Test

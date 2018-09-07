@@ -108,6 +108,12 @@ class DetailActivity : BaseActivity(){
         binding.tvDetailTweetSentimentInfo.text = Html.fromHtml(text)
         binding.tvDetailTweetSentimentInfo.setBackgroundColor(colorResource)
         binding.tvDetailTweetSentimentInfo.slideDownAnimation(this)
+
+        if(colorResource == resources.getColor(R.color.colorPositiveTweet)){
+            binding.tvDetailTweetSentimentInfo.setTextColor(resources.getColor(android.R.color.darker_gray))
+        }else{
+            binding.tvDetailTweetSentimentInfo.setTextColor(resources.getColor(android.R.color.white))
+        }
     }
 
 
