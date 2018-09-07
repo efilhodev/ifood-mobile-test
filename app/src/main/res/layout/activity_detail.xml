@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="br.com.eduardofilho.ifood_mobile_test.ui.detail.DetailViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:id="@+id/materialRippleLayout"
+            style="@style/MaterialRippleAccentEffect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:mutableVisibility="@{viewModel.getDetailAnalyzerButtonVisibility()}">
+
+
+            <Button
+                android:id="@+id/btn_detail_tweet_sentiment_analyzer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="Analisar sentimento"
+                android:textColor="@android:color/white" />
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <ImageView
+            android:id="@+id/iv_detail_tweet_avatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@mipmap/ic_twitter_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_tweet_sentiment_info" />
+
+        <TextView
+            android:id="@+id/tv_detail_tweet_real_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_detail_tweet_avatar"
+            app:layout_constraintStart_toEndOf="@+id/iv_detail_tweet_avatar"
+            app:layout_constraintTop_toTopOf="@+id/iv_detail_tweet_avatar"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <TextView
+            android:id="@+id/tv_detail_tweet_screen_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textSize="14sp"
+            android:alpha=".5"
+            app:layout_constraintStart_toEndOf="@+id/iv_detail_tweet_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_tweet_real_name" />
+
+        <TextView
+            android:id="@+id/tv_detail_tweet_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-1dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="-1dp"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/materialRippleLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_detail_tweet_avatar"
+            app:layout_constraintVertical_bias="0.22000003" />
+
+        <TextView
+            android:id="@+id/tv_detail_tweet_created_at"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_tweet_content" />
+
+        <TextView
+            android:id="@+id/tv_detail_tweet_sentiment_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:minHeight="?attr/actionBarSize"
+            android:text="Tweet sentiment"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/materialRippleLayout"
+            app:layout_constraintStart_toStartOf="@+id/materialRippleLayout"
+            app:layout_constraintTop_toBottomOf="@+id/tv_detail_tweet_created_at"
+            app:mutableVisibility="@{viewModel.getDetailAnalyzerLoadingVisibility()}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
